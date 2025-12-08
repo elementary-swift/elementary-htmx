@@ -1,8 +1,8 @@
 # ElementaryHTMX: Hypertext web apps with Swift
 
-**Ergonomic [HTMX](https://htmx.org/) extensions for [Elementary](https://github.com/sliemeobn/elementary)**
+**Ergonomic [HTMX](https://htmx.org/) extensions for [Elementary](https://github.com/elementary-swift/elementary)**
 
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fsliemeobn%2Felementary-htmx%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/sliemeobn/elementary-htmx) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fsliemeobn%2Felementary-htmx%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/sliemeobn/elementary-htmx)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Felementary-swift%2Felementary-htmx%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/elementary-swift/elementary-htmx) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Felementary-swift%2Felementary-htmx%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/elementary-swift/elementary-htmx)
 
 > [!IMPORTANT]
 > 
@@ -64,9 +64,9 @@ button(.hyperscript("on click send hello to <form />")) {
 
 ## Play with it
 
-Check out the [Hummingbird example app](https://github.com/sliemeobn/elementary-htmx/tree/main/Examples/HummingbirdDemo).
+Check out the [Hummingbird example app](https://github.com/elementary-swift/elementary-htmx/tree/main/Examples/HummingbirdDemo).
 
-Check out the [Vapor example app](https://github.com/sliemeobn/elementary-htmx/tree/main/Examples/VaporDemo).
+Check out the [Vapor example app](https://github.com/elementary-swift/elementary-htmx/tree/main/Examples/VaporDemo).
 
 ## Documentation
 
