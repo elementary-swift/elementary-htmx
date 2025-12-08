@@ -23,7 +23,7 @@ let package = Package(
         .library(name: "ElementaryHyperscript", targets: ["ElementaryHyperscript"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/sliemeobn/elementary.git", from: "0.6.0")
+        .package(url: "https://github.com/elementary-swift/elementary.git", from: "0.6.0")
     ],
     targets: [
         .target(
