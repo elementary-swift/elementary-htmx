@@ -12,7 +12,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/vapor/vapor", from: "4.102.0"),
         .package(url: "https://github.com/vapor-community/vapor-elementary.git", from: "0.2.0"),
-        .package(path: "../../"),
+        .package(name: "elementary-htmx", path: "../../"),
         .package(url: "https://github.com/apple/swift-async-algorithms", from: "1.0.0"),
     ],
     targets: [

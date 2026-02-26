@@ -10,7 +10,7 @@ let package = Package(
         .executable(name: "App", targets: ["App"])
     ],
     dependencies: [
-        .package(path: "../../"),
+        .package(name: "elementary-htmx", path: "../../"),
         .package(url: "https://github.com/hummingbird-project/hummingbird.git", from: "2.0.0"),
         .package(url: "https://github.com/hummingbird-project/hummingbird-websocket.git", from: "2.0.0"),
         .package(url: "https://github.com/hummingbird-community/hummingbird-elementary.git", from: "0.4.0"),
