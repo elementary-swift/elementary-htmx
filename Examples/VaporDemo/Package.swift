@@ -12,7 +12,10 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/vapor/vapor", from: "4.102.0"),
         .package(url: "https://github.com/vapor-community/vapor-elementary.git", from: "0.2.0"),
+        // In this demo project we import elementary-htmx from the local file system.
         .package(name: "elementary-htmx", path: "../../"),
+        // In a real project add a remote dependency, e.g.
+        // .package(url: "https://github.com/elementary-swift/elementary-htmx.git", from: "0.5.0"),
         .package(url: "https://github.com/apple/swift-async-algorithms", from: "1.0.0"),
     ],
     targets: [

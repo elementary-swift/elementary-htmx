@@ -10,7 +10,10 @@ let package = Package(
         .executable(name: "App", targets: ["App"])
     ],
     dependencies: [
+        // In this demo project we import elementary-htmx from the local file system.
         .package(name: "elementary-htmx", path: "../../"),
+        // In a real project add a remote dependency, e.g.
+        // .package(url: "https://github.com/elementary-swift/elementary-htmx.git", from: "0.5.0"),
         .package(url: "https://github.com/hummingbird-project/hummingbird.git", from: "2.0.0"),
         .package(url: "https://github.com/hummingbird-project/hummingbird-websocket.git", from: "2.0.0"),
         .package(url: "https://github.com/hummingbird-community/hummingbird-elementary.git", from: "0.4.0"),
