@@ -1,8 +1,11 @@
-// swift-tools-version: 6.1
+// swift-tools-version: 5.10
 import PackageDescription
 
 let featureFlags: [SwiftSetting] = [
-    .enableUpcomingFeature("ExistentialAny")
+    .enableExperimentalFeature("StrictConcurrency=complete"),
+    .enableUpcomingFeature("ExistentialAny"),
+    .enableUpcomingFeature("ConciseMagicFile"),
+    .enableUpcomingFeature("ImplicitOpenExistentials"),
 ]
 
 let package = Package(
