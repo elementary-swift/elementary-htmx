@@ -1,20 +1,20 @@
 import Elementary
 import ElementaryHTMXSSE
 import TestUtilities
-import XCTest
+import Testing
 
-final class ElementaryHTMXSSETests: XCTestCase {
-    func testExtension() {
+@Suite struct ElementaryHTMXSSETests {
+    @Test func rendersExtension() {
         HTMLAttributeAssertEqual(.hx.ext(.sse), "hx-ext", "sse")
     }
 
-    func testAttributes() {
+    @Test func rendersAttributes() {
         HTMLAttributeAssertEqual(.sse.connect("/test"), "sse-connect", "/test")
         HTMLAttributeAssertEqual(.sse.swap("test"), "sse-swap", "test")
         HTMLAttributeAssertEqual(.sse.close("test"), "sse-close", "test")
     }
 
-    func testAttributeValues() {
+    @Test func rendersAttributeValues() {
         HTMLAttributeAssertEqual(.hx.trigger(.sse("time")), "hx-trigger", "sse:time")
     }
 }
