@@ -1,22 +1,22 @@
 import Elementary
 import ElementaryHTMXWS
 import TestUtilities
-import XCTest
+import Testing
 
-final class ElementaryHTMXWSTests: XCTestCase {
-    func testExtension() {
+@Suite struct ElementaryHTMXWSTests {
+    @Test func rendersExtension() {
         HTMLAttributeAssertEqual(.hx.ext(.ws), "hx-ext", "ws")
     }
 
-    func testAttributes() {
+    @Test func rendersAttributes() {
         HTMLAttributeAssertEqual(.ws.connect("/test"), "ws-connect", "/test")
     }
 
-    func testAttributeValues() {
+    @Test func rendersAttributeValues() {
         HTMLAttributeAssertEqual(.hx.trigger(.ws("time")), "hx-trigger", "ws:time")
     }
 
-    func testWSSend() {
+    @Test func rendersWSSend() {
         HTMLAttributeAssertEqual(.ws.send, "ws-send", nil)
     }
 }
