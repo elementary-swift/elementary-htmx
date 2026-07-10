@@ -7,30 +7,30 @@ extension HTMLAttribute where Tag: HTMLTrait.Attributes.Global {
 }
 
 extension HTMLAttribute.hx {
-    public static func get(_ url: String) -> HTMLAttribute {
+    public static func get(_ url: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-get", value: url)
     }
 
-    public static func post(_ url: String) -> HTMLAttribute {
+    public static func post(_ url: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-post", value: url)
     }
 
-    public static func pushURL(_ url: String) -> HTMLAttribute {
+    public static func pushURL(_ url: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-push-url", value: url)
     }
 
-    public static func pushURL(_ value: Bool) -> HTMLAttribute {
+    public static func pushURL(_ value: Bool) -> HTMLAttribute<Tag> {
         .init(name: "hx-push-url", value: value.stringValue)
     }
 
-    public static func select(_ selector: String) -> HTMLAttribute {
+    public static func select(_ selector: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-select", value: selector)
     }
 
     public static func selectOOB(
         _ selector: String,
         _ swap: HTMLAttributeValue.HTMX.SwapTarget? = nil
-    ) -> HTMLAttribute {
+    ) -> HTMLAttribute<Tag> {
         if let swap {
             .init(
                 name: "hx-select-oob",
@@ -42,18 +42,18 @@ extension HTMLAttribute.hx {
         }
     }
 
-    public static func swap(_ value: HTMLAttributeValue.HTMX.ModifiedSwapTarget) -> HTMLAttribute {
+    public static func swap(_ value: HTMLAttributeValue.HTMX.ModifiedSwapTarget) -> HTMLAttribute<Tag> {
         .init(name: "hx-swap", value: value.rawValue)
     }
 
-    public static func swapOOB(_ value: Bool) -> HTMLAttribute {
+    public static func swapOOB(_ value: Bool) -> HTMLAttribute<Tag> {
         .init(name: "hx-swap-oob", value: value.stringValue)
     }
 
     public static func swapOOB(
         _ swap: HTMLAttributeValue.HTMX.SwapTarget,
         _ selector: String? = nil
-    ) -> HTMLAttribute {
+    ) -> HTMLAttribute<Tag> {
         if let selector {
             .init(name: "hx-swap-oob", value: "\(swap.rawValue):\(selector)")
         } else {
@@ -61,85 +61,85 @@ extension HTMLAttribute.hx {
         }
     }
 
-    public static func target(_ selector: String) -> HTMLAttribute {
+    public static func target(_ selector: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-target", value: selector)
     }
 
-    public static func trigger(_ value: HTMLAttributeValue.HTMX.EventTrigger) -> HTMLAttribute {
+    public static func trigger(_ value: HTMLAttributeValue.HTMX.EventTrigger) -> HTMLAttribute<Tag> {
         .init(name: "hx-trigger", value: value.rawValue, mergedBy: .appending(separatedBy: ", "))
     }
 
-    public static func trigger(_ value: HTMLAttributeValue.HTMX.PollingTrigger) -> HTMLAttribute {
+    public static func trigger(_ value: HTMLAttributeValue.HTMX.PollingTrigger) -> HTMLAttribute<Tag> {
         .init(name: "hx-trigger", value: value.rawValue, mergedBy: .appending(separatedBy: ", "))
     }
 
-    public static func vals(_ value: String) -> HTMLAttribute {
+    public static func vals(_ value: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-vals", value: value)
     }
 }
 
 extension HTMLAttribute.hx {
-    public static func boost(_ value: Bool) -> HTMLAttribute {
+    public static func boost(_ value: Bool) -> HTMLAttribute<Tag> {
         .init(name: "hx-boost", value: value.stringValue)
     }
 
-    public static func confirm(_ value: String) -> HTMLAttribute {
+    public static func confirm(_ value: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-confirm", value: value)
     }
 
-    public static func delete(_ url: String) -> HTMLAttribute {
+    public static func delete(_ url: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-delete", value: url)
     }
 
-    public static var disable: HTMLAttribute {
+    public static var disable: HTMLAttribute<Tag> {
         .init(name: "hx-disable", value: .none)
     }
 
-    public static func disabledElt(_ value: String) -> HTMLAttribute {
+    public static func disabledElt(_ value: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-disabled-elt", value: value)
     }
 
-    public static func ext(_ value: HTMLAttributeValue.HTMX.Extension) -> HTMLAttribute {
+    public static func ext(_ value: HTMLAttributeValue.HTMX.Extension) -> HTMLAttribute<Tag> {
         .init(name: "hx-ext", value: value.rawValue, mergedBy: .appending(separatedBy: ","))
     }
 
-    public static func headers(_ value: String) -> HTMLAttribute {
+    public static func headers(_ value: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-headers", value: value)
     }
 
-    public static func include(_ value: String) -> HTMLAttribute {
+    public static func include(_ value: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-include", value: value)
     }
 
-    public static func indicator(_ value: String) -> HTMLAttribute {
+    public static func indicator(_ value: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-indicator", value: value)
     }
 
-    public static func params(_ value: String) -> HTMLAttribute {
+    public static func params(_ value: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-params", value: value)
     }
 
-    public static func patch(_ url: String) -> HTMLAttribute {
+    public static func patch(_ url: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-patch", value: url)
     }
 
-    public static func put(_ url: String) -> HTMLAttribute {
+    public static func put(_ url: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-put", value: url)
     }
 
-    public static func replaceURL(_ url: String) -> HTMLAttribute {
+    public static func replaceURL(_ url: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-replace-url", value: url)
     }
 
-    public static func replaceURL(_ value: Bool) -> HTMLAttribute {
+    public static func replaceURL(_ value: Bool) -> HTMLAttribute<Tag> {
         .init(name: "hx-replace-url", value: value.stringValue)
     }
 
-    public static func request(_ value: String) -> HTMLAttribute {
+    public static func request(_ value: String) -> HTMLAttribute<Tag> {
         .init(name: "hx-request", value: value)
     }
 
-    public static func validate(_ value: Bool) -> HTMLAttribute {
+    public static func validate(_ value: Bool) -> HTMLAttribute<Tag> {
         .init(name: "hx-validate", value: value.stringValue)
     }
 }

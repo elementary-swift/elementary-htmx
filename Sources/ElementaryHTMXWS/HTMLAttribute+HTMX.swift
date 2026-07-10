@@ -7,11 +7,11 @@ public extension HTMLAttribute where Tag: HTMLTrait.Attributes.Global {
 }
 
 public extension HTMLAttribute.ws {
-    static func connect(_ url: String) -> HTMLAttribute {
+    static func connect(_ url: String) -> HTMLAttribute<Tag> {
         .init(name: "ws-connect", value: url)
     }
 
-    static var send: HTMLAttribute {
+    static var send: HTMLAttribute<Tag> {
         .init(name: "ws-send", value: nil)
     }
 }
