@@ -1,10 +1,10 @@
 import Elementary
 import ElementaryHTMX
 import TestUtilities
-import Testing
+import XCTest
 
-@Suite struct ElementaryHTMXTests {
-    @Test func rendersMethods() {
+final class ElementaryHTMXTests: XCTestCase {
+    func testMethods() {
         HTMLAttributeAssertEqual(.hx.get("/test"), "hx-get", "/test")
         HTMLAttributeAssertEqual(.hx.post("/test"), "hx-post", "/test")
         HTMLAttributeAssertEqual(.hx.put("/test"), "hx-put", "/test")
@@ -12,7 +12,7 @@ import Testing
         HTMLAttributeAssertEqual(.hx.delete("/test"), "hx-delete", "/test")
     }
 
-    @Test func rendersSwap() {
+    func testSwap() {
         HTMLAttributeAssertEqual(.hx.swap(.innerHTML), "hx-swap", "innerHTML")
         HTMLAttributeAssertEqual(.hx.swap(.outerHTML), "hx-swap", "outerHTML")
         HTMLAttributeAssertEqual(.hx.swap(.textContent), "hx-swap", "textContent")
@@ -24,36 +24,36 @@ import Testing
         HTMLAttributeAssertEqual(.hx.swap(.none), "hx-swap", "none")
     }
 
-    @Test func rendersSwapModifiers() {
+    func testSwapModifiers() {
         HTMLAttributeAssertEqual(.hx.swap(.innerHTML.transition(true)), "hx-swap", "innerHTML transition:true")
         HTMLAttributeAssertEqual(.hx.swap(.outerHTML.swap("1s").settle("10ms")), "hx-swap", "outerHTML swap:1s settle:10ms")
         HTMLAttributeAssertEqual(.hx.swap(.textContent.swap("1s").settle("10ms")), "hx-swap", "textContent swap:1s settle:10ms")
         HTMLAttributeAssertEqual(.hx.swap(.default.transition(true)), "hx-swap", "transition:true")
     }
 
-    @Test func rendersSelectOOB() {
+    func testSelectOOB() {
         HTMLAttributeAssertEqual(.hx.selectOOB("#test"), "hx-select-oob", "#test")
         HTMLAttributeAssertEqual(.hx.selectOOB("#test", .innerHTML), "hx-select-oob", "#test:innerHTML")
     }
 
-    @Test func rendersSwapOOB() {
+    func testSwapOOB() {
         HTMLAttributeAssertEqual(.hx.swapOOB(true), "hx-swap-oob", "true")
         HTMLAttributeAssertEqual(.hx.swapOOB(.innerHTML), "hx-swap-oob", "innerHTML")
         HTMLAttributeAssertEqual(.hx.swapOOB(.innerHTML, "#test"), "hx-swap-oob", "innerHTML:#test")
     }
 
-    @Test func rendersTrigger() {
+    func testTrigger() {
         HTMLAttributeAssertEqual(.hx.trigger(.event(.click)), "hx-trigger", "click")
         HTMLAttributeAssertEqual(.hx.trigger(.event(.intersect)), "hx-trigger", "intersect")
         HTMLAttributeAssertEqual(.hx.trigger(.every("1s")), "hx-trigger", "every 1s")
     }
 
-    @Test func rendersTriggerModifiers() {
+    func testTriggerModifiers() {
         HTMLAttributeAssertEqual(.hx.trigger(.event(.click).delay("1s").consume()), "hx-trigger", "click delay:1s consume")
         HTMLAttributeAssertEqual(.hx.trigger(.event(.intersect).once()), "hx-trigger", "intersect once")
     }
 
-    @Test func rendersDisable() {
+    func testDisable() {
         HTMLAttributeAssertEqual(.hx.disable, "hx-disable", nil)
     }
 }
