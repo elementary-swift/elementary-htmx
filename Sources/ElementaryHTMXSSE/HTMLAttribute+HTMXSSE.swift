@@ -7,15 +7,15 @@ public extension HTMLAttribute where Tag: HTMLTrait.Attributes.Global {
 }
 
 public extension HTMLAttribute.sse {
-    static func connect(_ url: String) -> HTMLAttribute {
+    static func connect(_ url: String) -> HTMLAttribute<Tag> {
         .init(name: "sse-connect", value: url)
     }
 
-    static func swap(_ eventName: String) -> HTMLAttribute {
+    static func swap(_ eventName: String) -> HTMLAttribute<Tag> {
         .init(name: "sse-swap", value: eventName)
     }
 
-    static func close(_ eventName: String) -> HTMLAttribute {
+    static func close(_ eventName: String) -> HTMLAttribute<Tag> {
         .init(name: "sse-close", value: eventName)
     }
 }
