@@ -4,11 +4,6 @@
 
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Felementary-swift%2Felementary-htmx%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/elementary-swift/elementary-htmx) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Felementary-swift%2Felementary-htmx%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/elementary-swift/elementary-htmx)
 
-> [!IMPORTANT]
-> 
-> This repo 📦 moved 📦 to its new home at **`https://github.com/elementary-swift`**.    
-> Please update your URLs to avoid trouble - and reach out if anything breaks!
-
 ```swift
 import Elementary
 import ElementaryHTMX
