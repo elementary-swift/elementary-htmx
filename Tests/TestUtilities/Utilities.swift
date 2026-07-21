@@ -1,13 +1,12 @@
 import Elementary
-import XCTest
+import Testing
 
 public func HTMLAttributeAssertEqual(
     _ attribute: HTMLAttribute<HTMLTag.div>,
     _ name: String,
     _ value: String?,
-    file: StaticString = #filePath,
-    line: UInt = #line
+    sourceLocation: SourceLocation = #_sourceLocation
 ) {
-    XCTAssertEqual(name, attribute.name, file: file, line: line)
-    XCTAssertEqual(value, attribute.value, file: file, line: line)
+    #expect(name == attribute.name, sourceLocation: sourceLocation)
+    #expect(value == attribute.value, sourceLocation: sourceLocation)
 }
