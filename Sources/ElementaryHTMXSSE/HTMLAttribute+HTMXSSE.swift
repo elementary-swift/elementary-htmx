@@ -12,7 +12,7 @@ public extension HTMLAttribute.sse {
     }
 
     static func swap(_ eventName: String) -> HTMLAttribute<Tag> {
-        .init(name: "sse-swap", value: eventName)
+        .init(name: "sse-swap", value: eventName, mergedBy: .appending(separatedBy: ","))
     }
 
     static func close(_ eventName: String) -> HTMLAttribute<Tag> {
