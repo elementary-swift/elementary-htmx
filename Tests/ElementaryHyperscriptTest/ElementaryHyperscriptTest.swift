@@ -1,10 +1,10 @@
 import Elementary
 import ElementaryHyperscript
 import TestUtilities
-import XCTest
+import Testing
 
-final class ElementaryHyperscriptTests: XCTestCase {
-    func testScript() {
+@Suite struct ElementaryHyperscriptTests {
+    @Test func rendersScript() {
         HTMLAttributeAssertEqual(.hyperscript("on click send hello to <form />"), "_", "on click send hello to <form />")
     }
 }
