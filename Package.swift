@@ -1,4 +1,4 @@
-// swift-tools-version: 6.1
+// swift-tools-version: 6.2
 import PackageDescription
 
 let featureFlags: [SwiftSetting] = [
@@ -20,7 +20,7 @@ let package = Package(
         .library(name: "ElementaryHyperscript", targets: ["ElementaryHyperscript"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/elementary-swift/elementary.git", from: "0.6.0")
+        .package(url: "https://github.com/elementary-swift/elementary.git", from: "0.8.3")
     ],
     targets: [
         .target(
