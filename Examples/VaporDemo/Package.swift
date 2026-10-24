@@ -1,8 +1,8 @@
-// swift-tools-version: 6.1
+// swift-tools-version: 6.2
 import PackageDescription
 
 let package = Package(
-    name: "HummingbirdDemo",
+    name: "VaporDemo",
     platforms: [
         .macOS(.v14)
     ],
@@ -31,8 +31,7 @@ let package = Package(
             ],
             resources: [
                 .copy("Public")
-            ],
-            swiftSettings: [.enableExperimentalFeature("StrictConcurrency=complete")]
+            ]
         )
     ]
 )
