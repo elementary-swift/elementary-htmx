@@ -7,5 +7,6 @@ public extension HTMLTag {
 /// A server-sent swap command that htmx removes from the response and swaps into its target.
 ///
 /// Set the target with `.hx.target(...)` or `.id(...)`, and optionally the swap style with `.hx.swap(...)`.
+/// Requires htmx 2.0.11 or later.
 /// See the [htmx reference](https://htmx.org/attributes/hx-partial/) for more information.
 public typealias hxPartial<Content: HTML> = HTMLElement<HTMLTag.hxPartial, Content>

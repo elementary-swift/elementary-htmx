@@ -27,7 +27,7 @@ div {
 MyFragment(items: items)
     .attributes(.hx.swapOOB(.outerHTML, "#list"))
 
-// server-sent swap commands with <hx-partial>
+// server-sent swap commands with <hx-partial> (requires htmx 2.0.11+)
 hxPartial(.hx.target("#notifications")) {
     "3 new messages"
 }
@@ -75,7 +75,7 @@ Check out the [Vapor example app](https://github.com/elementary-swift/elementary
 
 ## Documentation
 
-The package brings the `.hx` syntaxt to all `HTMLElements` - providing a rich API for most [HTMX attributes](https://htmx.org/docs/), as well as the `hxPartial` element for [`<hx-partial>`](https://htmx.org/attributes/hx-partial/).
+The package brings the `.hx` syntaxt to all `HTMLElements` - providing a rich API for most [HTMX attributes](https://htmx.org/docs/), as well as the `hxPartial` element for [`<hx-partial>`](https://htmx.org/attributes/hx-partial/) (requires htmx 2.0.11 or later).
 
 There is also an `ElementaryHTMXSSE` module that adds the `.sse` syntax for the [Server Sent Events extensions](https://github.com/bigskysoftware/htmx-extensions/blob/main/src/sse/README.md), as well as `ElementaryHTMXWS` to add the `.ws` syntax for the [WebSockets extensions.](https://github.com/bigskysoftware/htmx-extensions/blob/main/src/ws/README.md)
 
