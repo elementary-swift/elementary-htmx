@@ -18,7 +18,7 @@ struct App {
 
         let app = Application(
             router: router,
-            server: .http1WebSocketUpgrade(webSocketRouter: wsRouter, configuration: .init(extensions: [.perMessageDeflate()])),
+            server: .http1WebSocketUpgrade(webSocketRouter: wsRouter, configuration: .init(ws: .init(extensions: [.perMessageDeflate()]))),
             onServerRunning: { _ in
                 print("Server running on http://localhost:8080/")
                 #if DEBUG

@@ -61,7 +61,7 @@ struct ResultView: HTML {
     let x: Int
     let y: Int
 
-    @Environment(requiring: BonusFactStore.$current) var bonusFacts
+    @TaskLocalValue(requiring: BonusFactStore.$current) var bonusFacts
 
     var body: some HTML {
         p {

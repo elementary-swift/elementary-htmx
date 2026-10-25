@@ -52,7 +52,7 @@ struct MainPage: HTMLDocument {
 }
 
 struct ItemList: HTML {
-    @Environment(EnvironmentValues.$database) var database
+    @TaskLocalValue(EnvironmentValues.$database) var database
 
     var body: some HTML<HTMLTag.div> {
         div(.id("list")) {

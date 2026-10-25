@@ -14,7 +14,7 @@ func addRoutes(to app: Application) {
         let y = try request.query.get(Int.self, at: "y")
         return HTMLResponse {
             ResultView(x: x, y: y)
-                .environment(BonusFactStore.$current, BonusFactStore())
+                .taskLocalValue(BonusFactStore.$current, BonusFactStore())
         }
     }
 
