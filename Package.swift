@@ -14,9 +14,15 @@ let package = Package(
         .watchOS(.v10),
     ],
     products: [
+        // re-export the current default htmx version (v2)
         .library(name: "ElementaryHTMX", targets: ["ElementaryHTMX"]),
         .library(name: "ElementaryHTMXSSE", targets: ["ElementaryHTMXSSE"]),
         .library(name: "ElementaryHTMXWS", targets: ["ElementaryHTMXWS"]),
+        // htmx v2
+        .library(name: "ElementaryHTMX2", targets: ["ElementaryHTMX2"]),
+        .library(name: "ElementaryHTMX2SSE", targets: ["ElementaryHTMX2SSE"]),
+        .library(name: "ElementaryHTMX2WS", targets: ["ElementaryHTMX2WS"]),
+        // hyperscript
         .library(name: "ElementaryHyperscript", targets: ["ElementaryHyperscript"]),
     ],
     dependencies: [
@@ -26,23 +32,44 @@ let package = Package(
         .target(
             name: "ElementaryHTMX",
             dependencies: [
-                .product(name: "Elementary", package: "elementary")
+                .target(name: "ElementaryHTMX2")
             ],
             swiftSettings: featureFlags
         ),
         .target(
             name: "ElementaryHTMXSSE",
             dependencies: [
-                .product(name: "Elementary", package: "elementary"),
-                .target(name: "ElementaryHTMX"),
+                .target(name: "ElementaryHTMX2SSE")
             ],
             swiftSettings: featureFlags
         ),
         .target(
             name: "ElementaryHTMXWS",
             dependencies: [
+                .target(name: "ElementaryHTMX2WS")
+            ],
+            swiftSettings: featureFlags
+        ),
+        .target(
+            name: "ElementaryHTMX2",
+            dependencies: [
+                .product(name: "Elementary", package: "elementary")
+            ],
+            swiftSettings: featureFlags
+        ),
+        .target(
+            name: "ElementaryHTMX2SSE",
+            dependencies: [
                 .product(name: "Elementary", package: "elementary"),
-                .target(name: "ElementaryHTMX"),
+                .target(name: "ElementaryHTMX2"),
+            ],
+            swiftSettings: featureFlags
+        ),
+        .target(
+            name: "ElementaryHTMX2WS",
+            dependencies: [
+                .product(name: "Elementary", package: "elementary"),
+                .target(name: "ElementaryHTMX2"),
             ],
             swiftSettings: featureFlags
         ),
@@ -73,6 +100,30 @@ let package = Package(
             name: "ElementaryHTMXWSTest",
             dependencies: [
                 .target(name: "ElementaryHTMXWS"),
+                .target(name: "TestUtilities"),
+            ],
+            swiftSettings: featureFlags
+        ),
+        .testTarget(
+            name: "ElementaryHTMX2Test",
+            dependencies: [
+                .target(name: "ElementaryHTMX2"),
+                .target(name: "TestUtilities"),
+            ],
+            swiftSettings: featureFlags
+        ),
+        .testTarget(
+            name: "ElementaryHTMX2SSETest",
+            dependencies: [
+                .target(name: "ElementaryHTMX2SSE"),
+                .target(name: "TestUtilities"),
+            ],
+            swiftSettings: featureFlags
+        ),
+        .testTarget(
+            name: "ElementaryHTMX2WSTest",
+            dependencies: [
+                .target(name: "ElementaryHTMX2WS"),
                 .target(name: "TestUtilities"),
             ],
             swiftSettings: featureFlags

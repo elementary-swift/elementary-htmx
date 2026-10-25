@@ -5,7 +5,7 @@
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Felementary-swift%2Felementary-htmx%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/elementary-swift/elementary-htmx) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Felementary-swift%2Felementary-htmx%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/elementary-swift/elementary-htmx)
 
 > [!IMPORTANT]
-> This package currently targets the HTMX v2 API.
+> `ElementaryHTMX` currently targets the HTMX v2 API. Use the numbered modules (e.g. `ElementaryHTMX2`) to pin a specific HTMX version.
 >
 > See [this issue](https://github.com/elementary-swift/elementary-htmx/issues/16) for details about supporting the recently released [HTMX v4](https://four.htmx.org/announcements/2026-08-28-htmx-4.0.0-is-released).
 
@@ -26,6 +26,11 @@ div {
 
 MyFragment(items: items)
     .attributes(.hx.swapOOB(.outerHTML, "#list"))
+
+// server-sent swap commands with <hx-partial> (requires htmx 2.0.11+)
+hxPartial(.hx.target("#notifications")) {
+    "3 new messages"
+}
 ```
 
 ```swift
@@ -70,9 +75,31 @@ Check out the [Vapor example app](https://github.com/elementary-swift/elementary
 
 ## Documentation
 
-The package brings the `.hx` syntaxt to all `HTMLElements` - providing a rich API for most [HTMX attributes](https://htmx.org/docs/).
+The package brings the `.hx` syntaxt to all `HTMLElements` - providing a rich API for most [HTMX attributes](https://htmx.org/docs/), as well as the `hxPartial` element for [`<hx-partial>`](https://htmx.org/attributes/hx-partial/) (requires htmx 2.0.11 or later).
 
 There is also an `ElementaryHTMXSSE` module that adds the `.sse` syntax for the [Server Sent Events extensions](https://github.com/bigskysoftware/htmx-extensions/blob/main/src/sse/README.md), as well as `ElementaryHTMXWS` to add the `.ws` syntax for the [WebSockets extensions.](https://github.com/bigskysoftware/htmx-extensions/blob/main/src/ws/README.md)
+
+### HTMX versions
+
+Each supported HTMX major version has its own numbered modules:
+
+| HTMX | Core              | SSE                  | WebSockets          |
+| ---- | ----------------- | -------------------- | ------------------- |
+| v2   | `ElementaryHTMX2` | `ElementaryHTMX2SSE` | `ElementaryHTMX2WS` |
+
+The unnumbered `ElementaryHTMX`, `ElementaryHTMXSSE` and `ElementaryHTMXWS` modules re-export the current default version (v2), so existing imports keep working. Depend on a numbered module if you want to stay on a specific HTMX version when the default changes.
+
+```swift
+// Package.swift
+.product(name: "ElementaryHTMX2", package: "elementary-htmx")
+```
+
+```swift
+import Elementary
+import ElementaryHTMX2
+```
+
+### Hyperscript
 
 The package also supports the [Hyperscript](https://hyperscript.org) `_` attribute as `.hyperscript`.
 
