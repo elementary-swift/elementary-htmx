@@ -1,5 +1,5 @@
 import Elementary
-import ElementaryHTMX
+import ElementaryHTMX2
 
 public extension HTMLAttributeValue.HTMX.Extension {
     static var ws: Self { "ws" }

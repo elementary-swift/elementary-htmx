@@ -1,9 +1,9 @@
 import Elementary
-import ElementaryHTMXWS
+import ElementaryHTMX2WS
 import TestUtilities
 import Testing
 
-@Suite struct ElementaryHTMXWSTests {
+@Suite struct ElementaryHTMX2WSTests {
     @Test func rendersExtension() {
         HTMLAttributeAssertEqual(.hx.ext(.ws), "hx-ext", "ws")
     }
