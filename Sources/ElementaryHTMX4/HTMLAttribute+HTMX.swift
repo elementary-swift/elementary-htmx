@@ -15,11 +15,11 @@ typealias InheritanceModifier = HTMLAttributeValue.HTMX.InheritanceModifier
 extension HTMLAttribute.hx {
     static func attribute(
         _ name: String,
-        _ modifier: InheritanceModifier?,
+        _ inheritance: InheritanceModifier?,
         _ value: String?,
         mergedBy action: HTMLAttributeMergeAction = .replacing
     ) -> HTMLAttribute<Tag> {
-        .init(name: name + (modifier?.rawValue ?? ""), value: value, mergedBy: action)
+        .init(name: name + (inheritance?.rawValue ?? ""), value: value, mergedBy: action)
     }
 }
 
@@ -30,56 +30,56 @@ extension HTMLAttribute.hx {
         get(nil, url)
     }
 
-    public static func get(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
-        attribute("hx-get", modifier, url)
+    public static func get(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
+        attribute("hx-get", inheritance, url)
     }
 
     public static func post(_ url: String) -> HTMLAttribute<Tag> {
         post(nil, url)
     }
 
-    public static func post(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
-        attribute("hx-post", modifier, url)
+    public static func post(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
+        attribute("hx-post", inheritance, url)
     }
 
     public static func put(_ url: String) -> HTMLAttribute<Tag> {
         put(nil, url)
     }
 
-    public static func put(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
-        attribute("hx-put", modifier, url)
+    public static func put(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
+        attribute("hx-put", inheritance, url)
     }
 
     public static func patch(_ url: String) -> HTMLAttribute<Tag> {
         patch(nil, url)
     }
 
-    public static func patch(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
-        attribute("hx-patch", modifier, url)
+    public static func patch(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
+        attribute("hx-patch", inheritance, url)
     }
 
     public static func delete(_ url: String) -> HTMLAttribute<Tag> {
         delete(nil, url)
     }
 
-    public static func delete(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
-        attribute("hx-delete", modifier, url)
+    public static func delete(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
+        attribute("hx-delete", inheritance, url)
     }
 
     public static func query(_ url: String) -> HTMLAttribute<Tag> {
         query(nil, url)
     }
 
-    public static func query(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
-        attribute("hx-query", modifier, url)
+    public static func query(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
+        attribute("hx-query", inheritance, url)
     }
 
     public static func action(_ url: String) -> HTMLAttribute<Tag> {
         action(nil, url)
     }
 
-    public static func action(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
-        attribute("hx-action", modifier, url)
+    public static func action(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
+        attribute("hx-action", inheritance, url)
     }
 
     public static func method(_ method: HTMLAttributeValue.HTMX.Method) -> HTMLAttribute<Tag> {
@@ -87,43 +87,32 @@ extension HTMLAttribute.hx {
     }
 
     public static func method(
-        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ method: HTMLAttributeValue.HTMX.Method
     ) -> HTMLAttribute<Tag> {
-        attribute("hx-method", modifier, method.rawValue)
+        attribute("hx-method", inheritance, method.rawValue)
     }
 }
 
 // MARK: request control
 
 extension HTMLAttribute.hx {
-    public static func trigger(_ value: HTMLAttributeValue.HTMX.EventTrigger) -> HTMLAttribute<Tag> {
-        trigger(nil, value)
-    }
-
-    public static func trigger(
-        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
-        _ value: HTMLAttributeValue.HTMX.EventTrigger
-    ) -> HTMLAttribute<Tag> {
-        attribute("hx-trigger", modifier, value.rawValue, mergedBy: .appending(separatedBy: ", "))
-    }
-
-    /// A trigger with modifiers, e.g. `.hx.trigger(.event(.input), [.changed, .delay("500ms")])`.
+    /// A trigger with optional modifiers, e.g. `.hx.trigger(.event(.input), [.changed, .delay("500ms")])`.
     public static func trigger(
         _ value: HTMLAttributeValue.HTMX.EventTrigger,
-        _ modifiers: HCONValue<HCONScope.TriggerModifiers>
+        _ modifiers: HCONValue<HCONScope.TriggerModifiers> = .init()
     ) -> HTMLAttribute<Tag> {
         trigger(nil, value, modifiers)
     }
 
     public static func trigger(
-        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ value: HTMLAttributeValue.HTMX.EventTrigger,
-        _ modifiers: HCONValue<HCONScope.TriggerModifiers>
+        _ modifiers: HCONValue<HCONScope.TriggerModifiers> = .init()
     ) -> HTMLAttribute<Tag> {
         attribute(
             "hx-trigger",
-            modifier,
+            inheritance,
             modifiers.isEmpty ? value.rawValue : "\(value.rawValue) \(modifiers.rawValue)",
             mergedBy: .appending(separatedBy: ", ")
         )
@@ -134,37 +123,26 @@ extension HTMLAttribute.hx {
     }
 
     public static func trigger(
-        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ value: HTMLAttributeValue.HTMX.PollingTrigger
     ) -> HTMLAttribute<Tag> {
-        attribute("hx-trigger", modifier, value.rawValue, mergedBy: .appending(separatedBy: ", "))
+        attribute("hx-trigger", inheritance, value.rawValue, mergedBy: .appending(separatedBy: ", "))
     }
 
-    public static func swap(_ style: HTMLAttributeValue.HTMX.SwapTarget) -> HTMLAttribute<Tag> {
-        swap(nil, style)
-    }
-
-    public static func swap(
-        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
-        _ style: HTMLAttributeValue.HTMX.SwapTarget
-    ) -> HTMLAttribute<Tag> {
-        attribute("hx-swap", modifier, style.rawValue)
-    }
-
-    /// A swap style with modifiers, e.g. `.hx.swap(.beforeEnd, [.scroll(.bottom)])`.
+    /// A swap style with optional modifiers, e.g. `.hx.swap(.beforeEnd, [.scroll(.bottom)])`.
     public static func swap(
         _ style: HTMLAttributeValue.HTMX.SwapTarget,
-        _ modifiers: HCONValue<HCONScope.SwapModifiers>
+        _ modifiers: HCONValue<HCONScope.SwapModifiers> = .init()
     ) -> HTMLAttribute<Tag> {
         swap(nil, style, modifiers)
     }
 
     public static func swap(
-        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ style: HTMLAttributeValue.HTMX.SwapTarget,
-        _ modifiers: HCONValue<HCONScope.SwapModifiers>
+        _ modifiers: HCONValue<HCONScope.SwapModifiers> = .init()
     ) -> HTMLAttribute<Tag> {
-        attribute("hx-swap", modifier, modifiers.isEmpty ? style.rawValue : "\(style.rawValue) \(modifiers.rawValue)")
+        attribute("hx-swap", inheritance, modifiers.isEmpty ? style.rawValue : "\(style.rawValue) \(modifiers.rawValue)")
     }
 
     /// Modifiers for the default swap style, e.g. `.hx.swap([.transition(true)])`.
@@ -173,10 +151,10 @@ extension HTMLAttribute.hx {
     }
 
     public static func swap(
-        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ modifiers: HCONValue<HCONScope.SwapModifiers>
     ) -> HTMLAttribute<Tag> {
-        attribute("hx-swap", modifier, modifiers.rawValue)
+        attribute("hx-swap", inheritance, modifiers.rawValue)
     }
 
     @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
@@ -188,26 +166,26 @@ extension HTMLAttribute.hx {
     @available(*, deprecated, message: "Use modifier entries: .hx.swap(.inherited, .outerHTML, [.transition(true)])")
     @_disfavoredOverload
     public static func swap(
-        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ value: HTMLAttributeValue.HTMX.ModifiedSwapTarget
     ) -> HTMLAttribute<Tag> {
-        attribute("hx-swap", modifier, value.rawValue)
+        attribute("hx-swap", inheritance, value.rawValue)
     }
 
     public static func target(_ selector: String) -> HTMLAttribute<Tag> {
         target(nil, selector)
     }
 
-    public static func target(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ selector: String) -> HTMLAttribute<Tag> {
-        attribute("hx-target", modifier, selector)
+    public static func target(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ selector: String) -> HTMLAttribute<Tag> {
+        attribute("hx-target", inheritance, selector)
     }
 
     public static func select(_ selector: String) -> HTMLAttribute<Tag> {
         select(nil, selector)
     }
 
-    public static func select(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ selector: String) -> HTMLAttribute<Tag> {
-        attribute("hx-select", modifier, selector)
+    public static func select(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ selector: String) -> HTMLAttribute<Tag> {
+        attribute("hx-select", inheritance, selector)
     }
 
     public static func selectOOB(
@@ -218,14 +196,14 @@ extension HTMLAttribute.hx {
     }
 
     public static func selectOOB(
-        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ selector: String,
         _ swap: HTMLAttributeValue.HTMX.SwapTarget? = nil
     ) -> HTMLAttribute<Tag> {
         if let swap {
-            attribute("hx-select-oob", modifier, "\(selector):\(swap.rawValue)", mergedBy: .appending(separatedBy: ","))
+            attribute("hx-select-oob", inheritance, "\(selector):\(swap.rawValue)", mergedBy: .appending(separatedBy: ","))
         } else {
-            attribute("hx-select-oob", modifier, selector, mergedBy: .appending(separatedBy: ","))
+            attribute("hx-select-oob", inheritance, selector, mergedBy: .appending(separatedBy: ","))
         }
     }
 
@@ -256,8 +234,8 @@ extension HTMLAttribute.hx {
         confirm(nil, value)
     }
 
-    public static func confirm(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: String) -> HTMLAttribute<Tag> {
-        attribute("hx-confirm", modifier, value)
+    public static func confirm(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: String) -> HTMLAttribute<Tag> {
+        attribute("hx-confirm", inheritance, value)
     }
 }
 
@@ -294,8 +272,8 @@ extension HTMLAttribute.hx {
         vals(nil, value)
     }
 
-    public static func vals(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: String) -> HTMLAttribute<Tag> {
-        attribute("hx-vals", modifier, value)
+    public static func vals(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: String) -> HTMLAttribute<Tag> {
+        attribute("hx-vals", inheritance, value)
     }
 
     /// Values as HCON entries, e.g. `.hx.vals([.init("draft", true)])` renders `hx-vals="draft:true"`.
@@ -304,26 +282,26 @@ extension HTMLAttribute.hx {
     }
 
     public static func vals(
-        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ values: HCONValue<HCONScope.Values>
     ) -> HTMLAttribute<Tag> {
-        attribute("hx-vals", modifier, values.rawValue)
+        attribute("hx-vals", inheritance, values.rawValue)
     }
 
     public static func include(_ selector: String) -> HTMLAttribute<Tag> {
         include(nil, selector)
     }
 
-    public static func include(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ selector: String) -> HTMLAttribute<Tag> {
-        attribute("hx-include", modifier, selector)
+    public static func include(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ selector: String) -> HTMLAttribute<Tag> {
+        attribute("hx-include", inheritance, selector)
     }
 
     public static func headers(_ value: String) -> HTMLAttribute<Tag> {
         headers(nil, value)
     }
 
-    public static func headers(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: String) -> HTMLAttribute<Tag> {
-        attribute("hx-headers", modifier, value)
+    public static func headers(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: String) -> HTMLAttribute<Tag> {
+        attribute("hx-headers", inheritance, value)
     }
 
     /// Headers as HCON entries, e.g. `.hx.headers([.init("X-Widget-Id", "42")])`.
@@ -332,18 +310,18 @@ extension HTMLAttribute.hx {
     }
 
     public static func headers(
-        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ values: HCONValue<HCONScope.Values>
     ) -> HTMLAttribute<Tag> {
-        attribute("hx-headers", modifier, values.rawValue)
+        attribute("hx-headers", inheritance, values.rawValue)
     }
 
     public static func encoding(_ value: String) -> HTMLAttribute<Tag> {
         encoding(nil, value)
     }
 
-    public static func encoding(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: String) -> HTMLAttribute<Tag> {
-        attribute("hx-encoding", modifier, value)
+    public static func encoding(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: String) -> HTMLAttribute<Tag> {
+        attribute("hx-encoding", inheritance, value)
     }
 }
 
@@ -354,32 +332,32 @@ extension HTMLAttribute.hx {
         pushURL(nil, url)
     }
 
-    public static func pushURL(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
-        attribute("hx-push-url", modifier, url)
+    public static func pushURL(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
+        attribute("hx-push-url", inheritance, url)
     }
 
     public static func pushURL(_ value: Bool) -> HTMLAttribute<Tag> {
         pushURL(nil, value)
     }
 
-    public static func pushURL(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: Bool) -> HTMLAttribute<Tag> {
-        attribute("hx-push-url", modifier, value.stringValue)
+    public static func pushURL(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: Bool) -> HTMLAttribute<Tag> {
+        attribute("hx-push-url", inheritance, value.stringValue)
     }
 
     public static func replaceURL(_ url: String) -> HTMLAttribute<Tag> {
         replaceURL(nil, url)
     }
 
-    public static func replaceURL(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
-        attribute("hx-replace-url", modifier, url)
+    public static func replaceURL(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ url: String) -> HTMLAttribute<Tag> {
+        attribute("hx-replace-url", inheritance, url)
     }
 
     public static func replaceURL(_ value: Bool) -> HTMLAttribute<Tag> {
         replaceURL(nil, value)
     }
 
-    public static func replaceURL(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: Bool) -> HTMLAttribute<Tag> {
-        attribute("hx-replace-url", modifier, value.stringValue)
+    public static func replaceURL(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: Bool) -> HTMLAttribute<Tag> {
+        attribute("hx-replace-url", inheritance, value.stringValue)
     }
 
     public static var historyElt: HTMLAttribute<Tag> {
@@ -394,8 +372,8 @@ extension HTMLAttribute.hx {
         boost(nil, value)
     }
 
-    public static func boost(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: Bool) -> HTMLAttribute<Tag> {
-        attribute("hx-boost", modifier, value.stringValue)
+    public static func boost(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: Bool) -> HTMLAttribute<Tag> {
+        attribute("hx-boost", inheritance, value.stringValue)
     }
 
     /// Boost with config, e.g. `.hx.boost(.inherited, [.swap(.outerSync), .select("#main"), .target("#main")])`.
@@ -404,10 +382,10 @@ extension HTMLAttribute.hx {
     }
 
     public static func boost(
-        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ config: HCONValue<HCONScope.BoostConfig>
     ) -> HTMLAttribute<Tag> {
-        attribute("hx-boost", modifier, config.rawValue)
+        attribute("hx-boost", inheritance, config.rawValue)
     }
 }
 
@@ -418,8 +396,8 @@ extension HTMLAttribute.hx {
         indicator(nil, selector)
     }
 
-    public static func indicator(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ selector: String) -> HTMLAttribute<Tag> {
-        attribute("hx-indicator", modifier, selector)
+    public static func indicator(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ selector: String) -> HTMLAttribute<Tag> {
+        attribute("hx-indicator", inheritance, selector)
     }
 
     /// Renders `hx-status:<code>`, e.g. `.hx.status("422", [.target("#errors")])`. Codes may use wildcards like `"5xx"`.
@@ -431,11 +409,11 @@ extension HTMLAttribute.hx {
     }
 
     public static func status(
-        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ code: String,
         _ overrides: HCONValue<HCONScope.StatusOverrides>
     ) -> HTMLAttribute<Tag> {
-        attribute("hx-status:\(code)", modifier, overrides.rawValue)
+        attribute("hx-status:\(code)", inheritance, overrides.rawValue)
     }
 
     public static func sync(
@@ -446,14 +424,14 @@ extension HTMLAttribute.hx {
     }
 
     public static func sync(
-        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ selector: String,
         _ strategy: HTMLAttributeValue.HTMX.SyncStrategy? = nil
     ) -> HTMLAttribute<Tag> {
         if let strategy {
-            attribute("hx-sync", modifier, "\(selector):\(strategy.rawValue)")
+            attribute("hx-sync", inheritance, "\(selector):\(strategy.rawValue)")
         } else {
-            attribute("hx-sync", modifier, selector)
+            attribute("hx-sync", inheritance, selector)
         }
     }
 
@@ -462,18 +440,18 @@ extension HTMLAttribute.hx {
     }
 
     public static func sync(
-        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ strategy: HTMLAttributeValue.HTMX.SyncStrategy
     ) -> HTMLAttribute<Tag> {
-        attribute("hx-sync", modifier, strategy.rawValue)
+        attribute("hx-sync", inheritance, strategy.rawValue)
     }
 
     public static func validate(_ value: Bool) -> HTMLAttribute<Tag> {
         validate(nil, value)
     }
 
-    public static func validate(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: Bool) -> HTMLAttribute<Tag> {
-        attribute("hx-validate", modifier, value.stringValue)
+    public static func validate(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: Bool) -> HTMLAttribute<Tag> {
+        attribute("hx-validate", inheritance, value.stringValue)
     }
 
     /// Adds `disabled` to the selected elements while a request is in flight, e.g. `.hx.disable("this")`.
@@ -481,8 +459,8 @@ extension HTMLAttribute.hx {
         disable(nil, selector)
     }
 
-    public static func disable(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ selector: String) -> HTMLAttribute<Tag> {
-        attribute("hx-disable", modifier, selector)
+    public static func disable(_ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?, _ selector: String) -> HTMLAttribute<Tag> {
+        attribute("hx-disable", inheritance, selector)
     }
 
     /// Disables htmx processing for this element and all its children.
@@ -508,9 +486,9 @@ extension HTMLAttribute.hx {
     }
 
     public static func config(
-        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ value: HCONValue<HCONScope.RequestConfig>
     ) -> HTMLAttribute<Tag> {
-        attribute("hx-config", modifier, value.rawValue)
+        attribute("hx-config", inheritance, value.rawValue)
     }
 }

@@ -120,12 +120,10 @@ public extension HCONValue.Entry where Scope == HCONScope.TriggerModifiers {
 // MARK: SwapOverride: StatusOverrides, BoostConfig
 
 public extension HCONValue.Entry where Scope: HCONScope.SwapOverride {
-    static func swap(_ style: HTMLAttributeValue.HTMX.SwapTarget) -> Self { .init("swap", style.rawValue) }
-
-    /// A swap style with modifiers, e.g. `.swap(.innerHTML, [.strip(true)])` renders `swap:'innerHTML strip:true'`.
+    /// A swap style with optional modifiers, e.g. `.swap(.innerHTML, [.strip(true)])` renders `swap:'innerHTML strip:true'`.
     static func swap(
         _ style: HTMLAttributeValue.HTMX.SwapTarget,
-        _ modifiers: HCONValue<HCONScope.SwapModifiers>
+        _ modifiers: HCONValue<HCONScope.SwapModifiers> = .init()
     ) -> Self {
         .init("swap", modifiers.isEmpty ? style.rawValue : "\(style.rawValue) \(modifiers.rawValue)")
     }

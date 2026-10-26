@@ -10,6 +10,11 @@ import Elementary
 public struct HCONValue<Scope>: Sendable, ExpressibleByArrayLiteral {
     public let rawValue: String
 
+    /// No entries. Used as the default for optional modifiers.
+    public init() {
+        rawValue = ""
+    }
+
     public init(_ entries: [Entry]) {
         var result = ""
         for entry in entries {
