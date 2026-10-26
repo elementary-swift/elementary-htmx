@@ -14,7 +14,7 @@ import Testing
     }
 
     @Test func rendersConfigEntries() {
-        let config: HTMLAttributeValue.HTMX.HCON<HTMLAttributeValue.HTMX.GlobalConfig> = [
+        let config: HCONValue<HCONScope.GlobalConfig> = [
             .ws.reconnect(true),
             .ws.reconnectDelay("500"),
             .ws.reconnectMaxAttempts(3),

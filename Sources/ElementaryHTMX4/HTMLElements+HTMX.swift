@@ -16,7 +16,7 @@ public extension HTMLVoidElement where Tag == HTMLTag.meta {
     /// ```swift
     /// meta(htmxConfig: [.defaultSwap(.outerHTML), .implicitInheritance(true)])
     /// ```
-    init(htmxConfig config: HTMLAttributeValue.HTMX.HCON<HTMLAttributeValue.HTMX.GlobalConfig>) {
+    init(htmxConfig config: HCONValue<HCONScope.GlobalConfig>) {
         self.init(.name("htmx-config"), .content(config.rawValue))
     }
 }

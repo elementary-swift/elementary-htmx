@@ -5,7 +5,8 @@ test.beforeEach(async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   page.on("console", (message) => {
-    if (message.type() === "error") errors.push(message.text());
+    // Chrome logs every 4xx/5xx response as a network error; those are expected in the hx-status test
+    if (message.type() === "error" && !message.text().startsWith("Failed to load resource:")) errors.push(message.text());
   });
   (page as Page & { errors: string[] }).errors = errors;
 });
@@ -39,6 +40,22 @@ test("hx-config is parsed as HCON and applied to the request", async ({ page }) 
   await expect(page.locator("#config-output")).toHaveText("Swapped");
   const request = JSON.parse((await page.locator("#configured").getAttribute("data-request")) ?? "{}");
   expect(request).toMatchObject({ timeout: "5s", cache: "no-cache", sse: { reconnect: false } });
+});
+
+test("hx-trigger from: with a quoted selector list listens on all elements", async ({ page }) => {
+  await page.goto("/modifiers");
+  await page.click("#t2");
+
+  await expect(page.locator("#from-output")).toHaveText("Swapped");
+});
+
+test("hx-status overrides target and swap for a status code", async ({ page }) => {
+  await page.goto("/modifiers");
+  await page.click("#status-button");
+
+  // strip:true unwraps the response's outer <div>
+  await expect(page.locator("#status-errors > span.error")).toHaveText("Invalid");
+  await expect(page.locator("#status-output")).toHaveText("empty");
 });
 
 test.describe("explicit inheritance", () => {

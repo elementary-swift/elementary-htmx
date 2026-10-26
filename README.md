@@ -102,7 +102,7 @@ import ElementaryHTMX2
 
 ### HTMX 4
 
-`ElementaryHTMX4` mirrors the [htmx 4 attributes](https://four.htmx.org/reference) by name. The `htmx-config` meta tag and the `hx-config` attribute take a list of `key:value` entries rendered as [HCON](https://four.htmx.org/docs/hcon-guide), with helpers for the common options of each. The [`hx-sse`](https://four.htmx.org/extensions/hx-sse) and [`hx-ws`](https://four.htmx.org/extensions/hx-ws) extensions are in `ElementaryHTMX4SSE` and `ElementaryHTMX4WS`, as `.hx.sse` and `.hx.ws` (`hx-sse:connect`, `hx-ws:send`, ...).
+`ElementaryHTMX4` mirrors the [htmx 4 attributes](https://four.htmx.org/reference) by name. Modifiers and options are lists of `key:value` entries rendered as [HCON](https://four.htmx.org/docs/hcon-guide), htmx's config notation, which also takes care of quoting: `hx-swap` and `hx-trigger` modifiers, `hx-status`, `hx-boost`, `hx-vals`, `hx-headers`, `hx-config` and the `htmx-config` meta tag. Each has helpers for its options, and `.init(key, value)` sets anything else. The v2-style modifier chains (`.outerHTML.transition(true)`, `.event(.click).once()`) still work but are deprecated. The [`hx-sse`](https://four.htmx.org/extensions/hx-sse) and [`hx-ws`](https://four.htmx.org/extensions/hx-ws) extensions are in `ElementaryHTMX4SSE` and `ElementaryHTMX4WS`, as `.hx.sse` and `.hx.ws` (`hx-sse:connect`, `hx-ws:send`, ...).
 
 ```swift
 // Package.swift
@@ -114,7 +114,14 @@ import Elementary
 import ElementaryHTMX4
 
 button(.hx.post("/clicked"), .hx.target("#output"), .hx.swap(.outerHTML)) { "Click Me" }
-input(.name("q"), .hx.query("/search"), .hx.trigger(.event(.input).delay("500ms")), .hx.target("#results"))
+input(.name("q"), .hx.query("/search"), .hx.trigger(.event(.input), [.changed, .delay("500ms")]), .hx.target("#results"))
+
+// modifiers, quoted for you: hx-trigger="submit from:'closest form'"
+div(.hx.get("/preview"), .hx.trigger(.event(.submit), [.from("closest form")])) {}
+div(.hx.get("/messages"), .hx.swap(.beforeEnd, [.scroll(.bottom), .settle("100ms")])) {}
+
+// per-status overrides: hx-status:422="target:#errors select:#validation-errors"
+form(.hx.post("/items"), .hx.status("422", [.target("#errors"), .select("#validation-errors")])) { ... }
 
 // built-in morph swaps
 div(.hx.get("/list"), .hx.swap(.innerMorph)) { ... }

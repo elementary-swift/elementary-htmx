@@ -11,11 +11,11 @@ import Testing
     }
 
     @Test func rendersNamedEventTrigger() {
-        HTMLAttributeAssertEqual(.hx.trigger(.event("progress").from("body")), "hx-trigger", "progress from:body")
+        HTMLAttributeAssertEqual(.hx.trigger(.event("progress"), [.from("body")]), "hx-trigger", "progress from:body")
     }
 
     @Test func rendersConfigEntries() {
-        let config: HTMLAttributeValue.HTMX.HCON<HTMLAttributeValue.HTMX.GlobalConfig> = [
+        let config: HCONValue<HCONScope.GlobalConfig> = [
             .sse.reconnect(false),
             .sse.reconnectDelay("1s"),
             .sse.reconnectMaxAttempts(5),

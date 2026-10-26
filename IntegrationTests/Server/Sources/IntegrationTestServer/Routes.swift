@@ -33,6 +33,15 @@ func addRoutes(to router: Router<some RequestContext>) {
         return HTMLResponse { ListItems(prefix: prefix, updated: true) }
     }
 
+    router.get("/modifiers") { _, _ in HTMLResponse { ModifiersPage() } }
+    router.post("/modifiers/invalid") { _, _ in
+        Response(
+            status: .unprocessableContent,
+            headers: [.contentType: "text/html"],
+            body: .init(byteBuffer: ByteBuffer(string: div { span(.class("error")) { "Invalid" } }.render()))
+        )
+    }
+
     router.get("/sse") { _, _ in HTMLResponse { SSEPage() } }
     router.get("/sse/stream") { _, _ in
         Response(

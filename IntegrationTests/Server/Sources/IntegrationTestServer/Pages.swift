@@ -5,12 +5,12 @@ import ElementaryHTMX4WS
 
 struct Page<Content: HTML>: HTMLDocument {
     var title: String
-    var config: HTMLAttributeValue.HTMX.HCON<HTMLAttributeValue.HTMX.GlobalConfig>?
+    var config: HCONValue<HCONScope.GlobalConfig>?
     var content: Content
 
     init(
         _ title: String,
-        config: HTMLAttributeValue.HTMX.HCON<HTMLAttributeValue.HTMX.GlobalConfig>? = nil,
+        config: HCONValue<HCONScope.GlobalConfig>? = nil,
         @HTMLBuilder content: () -> Content
     ) {
         self.title = title
@@ -166,6 +166,26 @@ struct WSPage: HTML {
                     button { "Send" }
                 }
             }
+        }
+    }
+}
+
+struct ModifiersPage: HTML {
+    var body: some HTML {
+        Page("modifiers") {
+            // the selector list must stay one quoted value, or htmx would split it into two triggers
+            div(.id("from-output"), .hx.get("/basic/fragment"), .hx.trigger(.event(.click), [.from("#t1, #t2")])) { "waiting" }
+            button(.id("t1")) { "One" }
+            button(.id("t2")) { "Two" }
+
+            button(
+                .id("status-button"),
+                .hx.post("/modifiers/invalid"),
+                .hx.target("#status-output"),
+                .hx.status("422", [.target("#status-errors"), .swap(.innerHTML, [.strip(true)])])
+            ) { "Submit" }
+            div(.id("status-output")) { "empty" }
+            div(.id("status-errors")) { "none" }
         }
     }
 }

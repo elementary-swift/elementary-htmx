@@ -2,9 +2,9 @@ import Elementary
 import ElementaryHTMX4
 import Testing
 
-@Suite struct ElementaryHTMX4HCONTests {
-    typealias Config = HTMLAttributeValue.HTMX.HCON<HTMLAttributeValue.HTMX.GlobalConfig>
-    typealias RequestConfig = HTMLAttributeValue.HTMX.HCON<HTMLAttributeValue.HTMX.RequestConfig>
+@Suite struct ElementaryHTMX4HCONValueTests {
+    typealias Config = HCONValue<HCONScope.GlobalConfig>
+    typealias RequestConfig = HCONValue<HCONScope.RequestConfig>
 
     @Test func rendersEntries() {
         #expect(Config([]).rawValue == "")

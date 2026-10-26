@@ -108,6 +108,27 @@ extension HTMLAttribute.hx {
         attribute("hx-trigger", modifier, value.rawValue, mergedBy: .appending(separatedBy: ", "))
     }
 
+    /// A trigger with modifiers, e.g. `.hx.trigger(.event(.input), [.changed, .delay("500ms")])`.
+    public static func trigger(
+        _ value: HTMLAttributeValue.HTMX.EventTrigger,
+        _ modifiers: HCONValue<HCONScope.TriggerModifiers>
+    ) -> HTMLAttribute<Tag> {
+        trigger(nil, value, modifiers)
+    }
+
+    public static func trigger(
+        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ value: HTMLAttributeValue.HTMX.EventTrigger,
+        _ modifiers: HCONValue<HCONScope.TriggerModifiers>
+    ) -> HTMLAttribute<Tag> {
+        attribute(
+            "hx-trigger",
+            modifier,
+            modifiers.isEmpty ? value.rawValue : "\(value.rawValue) \(modifiers.rawValue)",
+            mergedBy: .appending(separatedBy: ", ")
+        )
+    }
+
     public static func trigger(_ value: HTMLAttributeValue.HTMX.PollingTrigger) -> HTMLAttribute<Tag> {
         trigger(nil, value)
     }
@@ -119,10 +140,53 @@ extension HTMLAttribute.hx {
         attribute("hx-trigger", modifier, value.rawValue, mergedBy: .appending(separatedBy: ", "))
     }
 
+    public static func swap(_ style: HTMLAttributeValue.HTMX.SwapTarget) -> HTMLAttribute<Tag> {
+        swap(nil, style)
+    }
+
+    public static func swap(
+        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ style: HTMLAttributeValue.HTMX.SwapTarget
+    ) -> HTMLAttribute<Tag> {
+        attribute("hx-swap", modifier, style.rawValue)
+    }
+
+    /// A swap style with modifiers, e.g. `.hx.swap(.beforeEnd, [.scroll(.bottom)])`.
+    public static func swap(
+        _ style: HTMLAttributeValue.HTMX.SwapTarget,
+        _ modifiers: HCONValue<HCONScope.SwapModifiers>
+    ) -> HTMLAttribute<Tag> {
+        swap(nil, style, modifiers)
+    }
+
+    public static func swap(
+        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ style: HTMLAttributeValue.HTMX.SwapTarget,
+        _ modifiers: HCONValue<HCONScope.SwapModifiers>
+    ) -> HTMLAttribute<Tag> {
+        attribute("hx-swap", modifier, modifiers.isEmpty ? style.rawValue : "\(style.rawValue) \(modifiers.rawValue)")
+    }
+
+    /// Modifiers for the default swap style, e.g. `.hx.swap([.transition(true)])`.
+    public static func swap(_ modifiers: HCONValue<HCONScope.SwapModifiers>) -> HTMLAttribute<Tag> {
+        swap(nil, modifiers)
+    }
+
+    public static func swap(
+        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ modifiers: HCONValue<HCONScope.SwapModifiers>
+    ) -> HTMLAttribute<Tag> {
+        attribute("hx-swap", modifier, modifiers.rawValue)
+    }
+
+    @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
+    @_disfavoredOverload
     public static func swap(_ value: HTMLAttributeValue.HTMX.ModifiedSwapTarget) -> HTMLAttribute<Tag> {
         swap(nil, value)
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.swap(.inherited, .outerHTML, [.transition(true)])")
+    @_disfavoredOverload
     public static func swap(
         _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ value: HTMLAttributeValue.HTMX.ModifiedSwapTarget
@@ -180,6 +244,14 @@ extension HTMLAttribute.hx {
         }
     }
 
+    /// An out-of-band swap with modifiers, e.g. `.hx.swapOOB(.beforeEnd, [.target("#table tbody")])`.
+    public static func swapOOB(
+        _ style: HTMLAttributeValue.HTMX.SwapTarget,
+        _ modifiers: HCONValue<HCONScope.SwapModifiers>
+    ) -> HTMLAttribute<Tag> {
+        .init(name: "hx-swap-oob", value: modifiers.isEmpty ? style.rawValue : "\(style.rawValue) \(modifiers.rawValue)")
+    }
+
     public static func confirm(_ value: String) -> HTMLAttribute<Tag> {
         confirm(nil, value)
     }
@@ -226,6 +298,18 @@ extension HTMLAttribute.hx {
         attribute("hx-vals", modifier, value)
     }
 
+    /// Values as HCON entries, e.g. `.hx.vals([.init("draft", true)])` renders `hx-vals="draft:true"`.
+    public static func vals(_ values: HCONValue<HCONScope.Values>) -> HTMLAttribute<Tag> {
+        vals(nil, values)
+    }
+
+    public static func vals(
+        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ values: HCONValue<HCONScope.Values>
+    ) -> HTMLAttribute<Tag> {
+        attribute("hx-vals", modifier, values.rawValue)
+    }
+
     public static func include(_ selector: String) -> HTMLAttribute<Tag> {
         include(nil, selector)
     }
@@ -240,6 +324,18 @@ extension HTMLAttribute.hx {
 
     public static func headers(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ value: String) -> HTMLAttribute<Tag> {
         attribute("hx-headers", modifier, value)
+    }
+
+    /// Headers as HCON entries, e.g. `.hx.headers([.init("X-Widget-Id", "42")])`.
+    public static func headers(_ values: HCONValue<HCONScope.Values>) -> HTMLAttribute<Tag> {
+        headers(nil, values)
+    }
+
+    public static func headers(
+        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ values: HCONValue<HCONScope.Values>
+    ) -> HTMLAttribute<Tag> {
+        attribute("hx-headers", modifier, values.rawValue)
     }
 
     public static func encoding(_ value: String) -> HTMLAttribute<Tag> {
@@ -302,13 +398,16 @@ extension HTMLAttribute.hx {
         attribute("hx-boost", modifier, value.stringValue)
     }
 
-    /// Boost with a config string, e.g. `"swap:outerSync select:#main target:#main"`.
-    public static func boost(_ config: String) -> HTMLAttribute<Tag> {
+    /// Boost with config, e.g. `.hx.boost(.inherited, [.swap(.outerSync), .select("#main"), .target("#main")])`.
+    public static func boost(_ config: HCONValue<HCONScope.BoostConfig>) -> HTMLAttribute<Tag> {
         boost(nil, config)
     }
 
-    public static func boost(_ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?, _ config: String) -> HTMLAttribute<Tag> {
-        attribute("hx-boost", modifier, config)
+    public static func boost(
+        _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
+        _ config: HCONValue<HCONScope.BoostConfig>
+    ) -> HTMLAttribute<Tag> {
+        attribute("hx-boost", modifier, config.rawValue)
     }
 }
 
@@ -323,17 +422,20 @@ extension HTMLAttribute.hx {
         attribute("hx-indicator", modifier, selector)
     }
 
-    /// Renders `hx-status:<code>`, e.g. `.hx.status("422", "target:#errors")`. Codes may use wildcards like `"5xx"`.
-    public static func status(_ code: String, _ value: String) -> HTMLAttribute<Tag> {
-        status(nil, code, value)
+    /// Renders `hx-status:<code>`, e.g. `.hx.status("422", [.target("#errors")])`. Codes may use wildcards like `"5xx"`.
+    public static func status(
+        _ code: String,
+        _ overrides: HCONValue<HCONScope.StatusOverrides>
+    ) -> HTMLAttribute<Tag> {
+        status(nil, code, overrides)
     }
 
     public static func status(
         _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ code: String,
-        _ value: String
+        _ overrides: HCONValue<HCONScope.StatusOverrides>
     ) -> HTMLAttribute<Tag> {
-        attribute("hx-status:\(code)", modifier, value)
+        attribute("hx-status:\(code)", modifier, overrides.rawValue)
     }
 
     public static func sync(
@@ -401,13 +503,13 @@ extension HTMLAttribute.hx {
     }
 
     /// Per-request config, e.g. `.hx.config([.timeout("5s"), .cache("no-cache")])` renders `hx-config="timeout:5s cache:no-cache"`.
-    public static func config(_ value: HTMLAttributeValue.HTMX.HCON<HTMLAttributeValue.HTMX.RequestConfig>) -> HTMLAttribute<Tag> {
+    public static func config(_ value: HCONValue<HCONScope.RequestConfig>) -> HTMLAttribute<Tag> {
         config(nil, value)
     }
 
     public static func config(
         _ modifier: HTMLAttributeValue.HTMX.InheritanceModifier?,
-        _ value: HTMLAttributeValue.HTMX.HCON<HTMLAttributeValue.HTMX.RequestConfig>
+        _ value: HCONValue<HCONScope.RequestConfig>
     ) -> HTMLAttribute<Tag> {
         attribute("hx-config", modifier, value.rawValue)
     }

@@ -68,6 +68,7 @@ public extension HTMLAttributeValue.HTMX {
         public static var none: Self { "none" }
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
     struct ModifiedSwapTarget: RawRepresentable, Sendable {
         public var rawValue: String
         public init(rawValue: String) {
@@ -98,51 +99,64 @@ public extension HTMLAttributeValue.HTMX {
     }
 }
 
+@available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
 public extension HTMLAttributeValue.HTMX.ModifiedSwapTarget {
+    @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
     consuming func transition(_ value: Bool) -> Self {
         appending(modifier: "transition", value: value.stringValue)
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
     consuming func swap(_ duration: String) -> Self {
         appending(modifier: "swap", value: duration)
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
     consuming func settle(_ duration: String) -> Self {
         appending(modifier: "settle", value: duration)
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
     consuming func ignoreTitle(_ value: Bool) -> Self {
         appending(modifier: "ignoreTitle", value: value.stringValue)
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
     consuming func strip(_ value: Bool) -> Self {
         appending(modifier: "strip", value: value.stringValue)
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
     consuming func focusScroll(_ value: Bool) -> Self {
         appending(modifier: "focusScroll", value: value.stringValue)
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
     consuming func swapEmpty(_ value: Bool) -> Self {
         appending(modifier: "swapEmpty", value: value.stringValue)
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
     consuming func scroll(_ value: HTMLAttributeValue.HTMX.ScrollModifier) -> Self {
         appending(modifier: "scroll", value: value.rawValue)
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
     consuming func scrollTarget(_ selector: String) -> Self {
         appending(modifier: "scrollTarget", value: selector)
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
     consuming func show(_ value: HTMLAttributeValue.HTMX.ScrollModifier) -> Self {
         appending(modifier: "show", value: value.rawValue)
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
     consuming func showTarget(_ selector: String) -> Self {
         appending(modifier: "showTarget", value: selector)
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
     consuming func target(_ selector: String) -> Self {
         appending(modifier: "target", value: selector)
     }
@@ -191,12 +205,27 @@ public extension HTMLAttributeValue.HTMX {
             self.rawValue = rawValue
         }
 
-        public static func event(_ event: HTMLAttributeValue.MouseEvent) -> Self { .init(rawValue: "\(event.rawValue)") }
-        public static func event(_ event: HTMLAttributeValue.KeyboardEvent) -> Self { .init(rawValue: "\(event.rawValue)") }
-        public static func event(_ event: HTMLAttributeValue.FormEvent) -> Self { .init(rawValue: "\(event.rawValue)") }
-        public static func event(_ event: HTMLAttributeValue.HTMX.TriggerEvent) -> Self { .init(rawValue: "\(event.rawValue)") }
-        /// Any DOM or custom event, e.g. `.event("productsUpdated").from("body")`.
-        public static func event(_ name: String) -> Self { .init(rawValue: name) }
+        public static func event(_ event: HTMLAttributeValue.MouseEvent, filter: String? = nil) -> Self {
+            .event(event.rawValue, filter: filter)
+        }
+        public static func event(_ event: HTMLAttributeValue.KeyboardEvent, filter: String? = nil) -> Self {
+            .event(event.rawValue, filter: filter)
+        }
+        public static func event(_ event: HTMLAttributeValue.FormEvent, filter: String? = nil) -> Self {
+            .event(event.rawValue, filter: filter)
+        }
+        public static func event(_ event: HTMLAttributeValue.HTMX.TriggerEvent, filter: String? = nil) -> Self {
+            .event(event.rawValue, filter: filter)
+        }
+        /// Any DOM or custom event, e.g. `.event("productsUpdated")`.
+        /// The filter is a JavaScript expression, e.g. `.event(.keyup, filter: "key=='Enter'")` renders `keyup[key=='Enter']`.
+        public static func event(_ name: String, filter: String? = nil) -> Self {
+            if let filter {
+                .init(rawValue: "\(name)[\(filter)]")
+            } else {
+                .init(rawValue: name)
+            }
+        }
     }
 
     struct PollingTrigger: RawRepresentable, Sendable {
@@ -205,12 +234,20 @@ public extension HTMLAttributeValue.HTMX {
             self.rawValue = rawValue
         }
 
-        public static func every(_ interval: String) -> Self { .init(rawValue: "every \(interval)") }
+        /// Polls on an interval. The filter is a JavaScript expression, e.g. `.every("1s", filter: "isVisible()")`.
+        public static func every(_ interval: String, filter: String? = nil) -> Self {
+            if let filter {
+                .init(rawValue: "every \(interval) [\(filter)]")
+            } else {
+                .init(rawValue: "every \(interval)")
+            }
+        }
     }
 }
 
 public extension HTMLAttributeValue.HTMX.EventTrigger {
     /// Adds a filter expression after the event name, e.g. `keyup[key=='Enter']`.
+    @available(*, deprecated, message: "Use the filter parameter, e.g. .event(.keyup, filter: \"key=='Enter'\")")
     consuming func filter(_ expression: String) -> Self {
         let filter = "[\(expression)]"
         if let space = rawValue.firstIndex(of: " ") {
@@ -221,67 +258,82 @@ public extension HTMLAttributeValue.HTMX.EventTrigger {
         return self
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.trigger(.event(.click), [.once])")
     consuming func once() -> Self {
         appending(modifier: "once")
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.trigger(.event(.click), [.once])")
     consuming func changed() -> Self {
         appending(modifier: "changed")
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.trigger(.event(.click), [.once])")
     consuming func delay(_ value: String) -> Self {
         appending(modifier: "delay", value: value)
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.trigger(.event(.click), [.once])")
     consuming func throttle(_ value: String) -> Self {
         appending(modifier: "throttle", value: value)
     }
 
     /// Selectors with spaces or commas must be quoted, e.g. `.from("'closest form'")`.
+    @available(*, deprecated, message: "Use modifier entries: .hx.trigger(.event(.click), [.once])")
     consuming func from(_ selector: String) -> Self {
         appending(modifier: "from", value: selector)
     }
 
     /// Selectors with spaces or commas must be quoted, e.g. `.target("'.a, .b'")`.
+    @available(*, deprecated, message: "Use modifier entries: .hx.trigger(.event(.click), [.once])")
     consuming func target(_ selector: String) -> Self {
         appending(modifier: "target", value: selector)
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.trigger(.event(.click), [.once])")
     consuming func prevent() -> Self {
         appending(modifier: "prevent")
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.trigger(.event(.click), [.once])")
     consuming func stop() -> Self {
         appending(modifier: "stop")
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.trigger(.event(.click), [.once])")
     consuming func consume() -> Self {
         appending(modifier: "consume")
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.trigger(.event(.click), [.once])")
     consuming func halt() -> Self {
         appending(modifier: "halt")
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.trigger(.event(.click), [.once])")
     consuming func capture() -> Self {
         appending(modifier: "capture")
     }
 
+    @available(*, deprecated, message: "Use modifier entries: .hx.trigger(.event(.click), [.once])")
     consuming func passive() -> Self {
         appending(modifier: "passive")
     }
 
     /// `intersect` option.
+    @available(*, deprecated, message: "Use modifier entries: .hx.trigger(.event(.click), [.once])")
     consuming func root(_ selector: String) -> Self {
         appending(modifier: "root", value: selector)
     }
 
     /// `intersect` option.
+    @available(*, deprecated, message: "Use modifier entries: .hx.trigger(.event(.click), [.once])")
     consuming func rootMargin(_ value: String) -> Self {
         appending(modifier: "rootMargin", value: value)
     }
 
     /// `intersect` option.
+    @available(*, deprecated, message: "Use modifier entries: .hx.trigger(.event(.click), [.once])")
     consuming func threshold(_ value: Double) -> Self {
         appending(modifier: "threshold", value: "\(value)")
     }
@@ -299,6 +351,7 @@ public extension HTMLAttributeValue.HTMX.EventTrigger {
 
 public extension HTMLAttributeValue.HTMX.PollingTrigger {
     /// Adds a filter expression after the interval, e.g. `every 1s [someConditional]`.
+    @available(*, deprecated, message: "Use the filter parameter, e.g. .every(\"1s\", filter: \"isVisible()\")")
     consuming func filter(_ expression: String) -> Self {
         rawValue += " [\(expression)]"
         return self
