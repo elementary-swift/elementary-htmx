@@ -390,5 +390,6 @@ public extension HTMLAttributeValue.HTMX {
 }
 
 extension Bool {
+    @usableFromInline
     var stringValue: String { self ? "true" : "false" }
 }
