@@ -1,0 +1,47 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  integration-tests:
+    name: htmx 4 Integration Tests (Playwright)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container:
+      image: swift:6.2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: IntegrationTests/package-lock.json
+
+      - name: Cache server build
+        uses: actions/cache@v4
+        with:
+          path: IntegrationTests/Server/.build
+          key: ${{ runner.os }}-integration-test-server-${{ hashFiles('IntegrationTests/Server/Package.swift', 'Package.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-integration-test-server-
+
+      - name: Run integration tests
+        run: ./IntegrationTests/run.sh
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            IntegrationTests/playwright-report
+            IntegrationTests/test-results
+          retention-days: 7
