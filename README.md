@@ -75,7 +75,7 @@ Check out the [Vapor example app](https://github.com/elementary-swift/elementary
 
 ## Documentation
 
-The package brings the `.hx` syntaxt to all `HTMLElements` - providing a rich API for most [HTMX attributes](https://htmx.org/docs/), as well as the `hxPartial` element for [`<hx-partial>`](https://htmx.org/attributes/hx-partial/) (requires htmx 2.0.11 or later).
+The package brings the `.hx` syntax to all `HTMLElements` - providing a rich API for most [HTMX attributes](https://htmx.org/docs/), as well as the `hxPartial` element for [`<hx-partial>`](https://htmx.org/attributes/hx-partial/) (requires htmx 2.0.11 or later).
 
 There is also an `ElementaryHTMXSSE` module that adds the `.sse` syntax for the [Server Sent Events extensions](https://github.com/bigskysoftware/htmx-extensions/blob/main/src/sse/README.md), as well as `ElementaryHTMXWS` to add the `.ws` syntax for the [WebSockets extensions.](https://github.com/bigskysoftware/htmx-extensions/blob/main/src/ws/README.md)
 
@@ -102,7 +102,9 @@ import ElementaryHTMX2
 
 ### HTMX 4
 
-`ElementaryHTMX4` mirrors the [htmx 4 attributes](https://four.htmx.org/reference) by name. Modifiers and options are lists of `key:value` entries rendered as [HCON](https://four.htmx.org/docs/hcon-guide), htmx's config notation, which also takes care of quoting: `hx-swap` and `hx-trigger` modifiers, `hx-status`, `hx-boost`, `hx-vals`, `hx-headers`, `hx-config` and the `htmx-config` meta tag. Each has helpers for its options, and `.init(key, value)` sets anything else. The v2-style modifier chains (`.outerHTML.transition(true)`, `.event(.click).once()`) still work but are deprecated. The [`hx-sse`](https://four.htmx.org/extensions/hx-sse) and [`hx-ws`](https://four.htmx.org/extensions/hx-ws) extensions are in `ElementaryHTMX4SSE` and `ElementaryHTMX4WS`, as `.hx.sse` and `.hx.ws` (`hx-sse:connect`, `hx-ws:send`, ...).
+- `ElementaryHTMX4` mirrors the [htmx 4 attributes](https://four.htmx.org/reference) by name.
+- Modifiers and options are lists of entries, rendered and quoted as [HCON](https://four.htmx.org/docs/hcon-guide) for you. This covers `hx-swap` and `hx-trigger` modifiers, `hx-status`, `hx-boost`, `hx-vals`, `hx-headers`, `hx-config` and the `htmx-config` meta tag. Use `.init(key, value)` for anything without a helper.
+- The [`hx-sse`](https://four.htmx.org/extensions/hx-sse) and [`hx-ws`](https://four.htmx.org/extensions/hx-ws) extensions are in `ElementaryHTMX4SSE` and `ElementaryHTMX4WS`, as `.hx.sse` and `.hx.ws` (`hx-sse:connect`, `hx-ws:send`, ...).
 
 ```swift
 // Package.swift
@@ -131,8 +133,8 @@ div(.hx.confirm(.inherited, "Are you sure?")) {   // hx-confirm:inherited="Are y
     button(.hx.delete("/account")) { "Delete My Account" }
     button(.hx.put("/account")) { "Update My Account" }
 }
-div(.hx.vals(.inherited, #"{"tenant": "acme"}"#)) {
-    button(.hx.post("/save"), .hx.vals(.append, #"{"source": "save-btn"}"#)) { "Save" }
+div(.hx.vals(.inherited, [.init("tenant", "acme")])) {
+    button(.hx.post("/save"), .hx.vals(.append, [.init("source", "save-btn")])) { "Save" }
 }
 
 // multi-target updates with <hx-partial>
@@ -167,7 +169,7 @@ meta(htmxConfig: [.sse.reconnectDelay("1s"), .ws.reconnectMaxAttempts(5)])
 div(.hx.sse.connect("/progress"), .hx.config([.sse.reconnect(false)])) {}
 ```
 
-Upgrading from v2? htmx changed a lot in v4 (explicit inheritance, error responses are swapped, history, event names, SSE/WS attributes). See [What's new in htmx 4](https://four.htmx.org/docs/whats-new-in-htmx-4).
+Upgrading from v2? htmx changed a lot in v4 (explicit inheritance, error responses are swapped, history, event names, SSE/WS attributes). See [What's new in htmx 4](https://four.htmx.org/docs/whats-new-in-htmx-4). On the Swift side, the v2-style modifier chains (`.outerHTML.transition(true)`, `.event(.click).once()`) still work in `ElementaryHTMX4` but are deprecated in favor of modifier entries.
 
 ### Hyperscript
 

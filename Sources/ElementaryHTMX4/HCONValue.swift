@@ -40,9 +40,9 @@ public struct HCONValue<Scope>: Sendable, ExpressibleByArrayLiteral {
 
     /// A `key:value` pair, or a bare `key` flag. Dotted keys like `sse.reconnectDelay` set nested options.
     public struct Entry: Sendable {
-        public var key: String
+        public let key: String
         /// The HCON-encoded value, including quotes if needed. `nil` for a bare flag.
-        public private(set) var value: String?
+        public let value: String?
 
         @usableFromInline
         init(key: String, encodedValue: String?) {
