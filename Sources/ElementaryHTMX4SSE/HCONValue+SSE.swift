@@ -1,7 +1,15 @@
 import Elementary
 import ElementaryHTMX4
 
-public extension HCONValue.Entry {
+public extension HCONScope {
+    /// Scopes that accept `.sse` options: `meta(htmxConfig:)` and `.hx.config(...)`.
+    protocol SSEConfig {}
+}
+
+extension HCONScope.GlobalConfig: HCONScope.SSEConfig {}
+extension HCONScope.RequestConfig: HCONScope.SSEConfig {}
+
+public extension HCONValue.Entry where Scope: HCONScope.SSEConfig {
     /// `hx-sse` extension config entries, e.g. `.sse.reconnectDelay("1s")` renders `sse.reconnectDelay:1s`.
     /// Available in both `meta(htmxConfig:)` and `.hx.config(...)`.
     /// See the [hx-sse config reference](https://four.htmx.org/extensions/hx-sse#config) for more information.
