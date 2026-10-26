@@ -40,9 +40,15 @@ public extension HTMLAttributeValue.HTMX {
 }
 
 public extension HTMLAttributeValue.HTMX {
-    struct SwapTarget: RawRepresentable, ExpressibleByStringLiteral, Sendable {
+    /// The swap style, e.g. `.outerHTML`. See the [hx-swap reference](https://four.htmx.org/reference/attributes/hx-swap#swap-methods).
+    struct SwapStyle: RawRepresentable, ExpressibleByStringLiteral, Sendable {
         public var rawValue: String
         public init(rawValue: String) {
+            self.rawValue = rawValue
+        }
+
+        /// A swap style from an extension, e.g. `.init("upsert")`.
+        public init(_ rawValue: String) {
             self.rawValue = rawValue
         }
 
@@ -75,8 +81,8 @@ public extension HTMLAttributeValue.HTMX {
             self.rawValue = rawValue
         }
 
-        public init(_ swapTarget: SwapTarget) {
-            rawValue = swapTarget.rawValue
+        public init(_ swapStyle: SwapStyle) {
+            rawValue = swapStyle.rawValue
         }
 
         public static var innerHTML: Self { .init(.innerHTML) }
@@ -137,7 +143,7 @@ public extension HTMLAttributeValue.HTMX.ModifiedSwapTarget {
     }
 
     @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
-    consuming func scroll(_ value: HTMLAttributeValue.HTMX.ScrollModifier) -> Self {
+    consuming func scroll(_ value: HTMLAttributeValue.HTMX.ScrollPosition) -> Self {
         appending(modifier: "scroll", value: value.rawValue)
     }
 
@@ -147,7 +153,7 @@ public extension HTMLAttributeValue.HTMX.ModifiedSwapTarget {
     }
 
     @available(*, deprecated, message: "Use modifier entries: .hx.swap(.outerHTML, [.transition(true)])")
-    consuming func show(_ value: HTMLAttributeValue.HTMX.ScrollModifier) -> Self {
+    consuming func show(_ value: HTMLAttributeValue.HTMX.ScrollPosition) -> Self {
         appending(modifier: "show", value: value.rawValue)
     }
 
@@ -174,7 +180,8 @@ public extension HTMLAttributeValue.HTMX.ModifiedSwapTarget {
 }
 
 public extension HTMLAttributeValue.HTMX {
-    struct ScrollModifier: RawRepresentable, Sendable {
+    /// The position for the `scroll` and `show` swap modifiers.
+    struct ScrollPosition: RawRepresentable, Sendable {
         public var rawValue: String
         public init(rawValue: String) {
             self.rawValue = rawValue
@@ -182,13 +189,15 @@ public extension HTMLAttributeValue.HTMX {
 
         public static var top: Self { .init(rawValue: "top") }
         public static var bottom: Self { .init(rawValue: "bottom") }
-        /// Only valid for `show`.
+        /// Only valid for `show`, e.g. to turn off `show:top` on boosted forms. `scroll` accepts `top` and `bottom`.
         public static var none: Self { .init(rawValue: "none") }
     }
 }
 
 public extension HTMLAttributeValue.HTMX {
-    struct TriggerEvent: RawRepresentable, Sendable {
+    /// Events that htmx fires itself, for use in `hx-trigger`.
+    /// See the [hx-trigger reference](https://four.htmx.org/reference/attributes/hx-trigger#synthetic-events).
+    struct SyntheticEvent: RawRepresentable, Sendable {
         public var rawValue: String
         public init(rawValue: String) {
             self.rawValue = rawValue
@@ -199,7 +208,8 @@ public extension HTMLAttributeValue.HTMX {
         public static var intersect: Self { .init(rawValue: "intersect") }
     }
 
-    struct EventTrigger: RawRepresentable, Sendable {
+    /// The event part of an `hx-trigger` value: an event with an optional filter, or a polling interval.
+    struct Trigger: RawRepresentable, Sendable {
         public var rawValue: String
         public init(rawValue: String) {
             self.rawValue = rawValue
@@ -214,7 +224,7 @@ public extension HTMLAttributeValue.HTMX {
         public static func event(_ event: HTMLAttributeValue.FormEvent, filter: String? = nil) -> Self {
             .event(event.rawValue, filter: filter)
         }
-        public static func event(_ event: HTMLAttributeValue.HTMX.TriggerEvent, filter: String? = nil) -> Self {
+        public static func event(_ event: HTMLAttributeValue.HTMX.SyntheticEvent, filter: String? = nil) -> Self {
             .event(event.rawValue, filter: filter)
         }
         /// Any DOM or custom event, e.g. `.event("productsUpdated")`.
@@ -226,15 +236,9 @@ public extension HTMLAttributeValue.HTMX {
                 .init(rawValue: name)
             }
         }
-    }
 
-    struct PollingTrigger: RawRepresentable, Sendable {
-        public var rawValue: String
-        public init(rawValue: String) {
-            self.rawValue = rawValue
-        }
-
-        /// Polls on an interval. The filter is a JavaScript expression, e.g. `.every("1s", filter: "isVisible()")`.
+        /// Polls on an interval. The filter is a JavaScript expression, e.g. `.every("1s", filter: "isVisible()")`
+        /// renders `every 1s [isVisible()]`.
         public static func every(_ interval: String, filter: String? = nil) -> Self {
             if let filter {
                 .init(rawValue: "every \(interval) [\(filter)]")
@@ -245,12 +249,14 @@ public extension HTMLAttributeValue.HTMX {
     }
 }
 
-public extension HTMLAttributeValue.HTMX.EventTrigger {
-    /// Adds a filter expression after the event name, e.g. `keyup[key=='Enter']`.
+public extension HTMLAttributeValue.HTMX.Trigger {
+    /// Adds a filter expression, e.g. `keyup[key=='Enter']`, or `every 1s [someConditional]` for polling.
     @available(*, deprecated, message: "Use the filter parameter, e.g. .event(.keyup, filter: \"key=='Enter'\")")
     consuming func filter(_ expression: String) -> Self {
         let filter = "[\(expression)]"
-        if let space = rawValue.firstIndex(of: " ") {
+        if rawValue.hasPrefix("every ") {
+            rawValue += " \(filter)"
+        } else if let space = rawValue.firstIndex(of: " ") {
             rawValue.insert(contentsOf: filter, at: space)
         } else {
             rawValue += filter
@@ -349,15 +355,6 @@ public extension HTMLAttributeValue.HTMX.EventTrigger {
     }
 }
 
-public extension HTMLAttributeValue.HTMX.PollingTrigger {
-    /// Adds a filter expression after the interval, e.g. `every 1s [someConditional]`.
-    @available(*, deprecated, message: "Use the filter parameter, e.g. .every(\"1s\", filter: \"isVisible()\")")
-    consuming func filter(_ expression: String) -> Self {
-        rawValue += " [\(expression)]"
-        return self
-    }
-}
-
 public extension HTMLAttributeValue.HTMX {
     struct SyncStrategy: RawRepresentable, Sendable {
         public var rawValue: String
@@ -373,6 +370,23 @@ public extension HTMLAttributeValue.HTMX {
         public static var queueLast: Self { .init(rawValue: "queue last") }
         public static var queueAll: Self { .init(rawValue: "queue all") }
     }
+}
+
+public extension HTMLAttributeValue.HTMX {
+    @available(*, deprecated, renamed: "SwapStyle")
+    typealias SwapTarget = SwapStyle
+
+    @available(*, deprecated, renamed: "ScrollPosition")
+    typealias ScrollModifier = ScrollPosition
+
+    @available(*, deprecated, renamed: "SyntheticEvent")
+    typealias TriggerEvent = SyntheticEvent
+
+    @available(*, deprecated, renamed: "Trigger")
+    typealias EventTrigger = Trigger
+
+    @available(*, deprecated, renamed: "Trigger")
+    typealias PollingTrigger = Trigger
 }
 
 extension Bool {

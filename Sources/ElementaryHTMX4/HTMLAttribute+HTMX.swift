@@ -99,7 +99,7 @@ extension HTMLAttribute.hx {
 extension HTMLAttribute.hx {
     /// A trigger with optional modifiers, e.g. `.hx.trigger(.event(.input), [.changed, .delay("500ms")])`.
     public static func trigger(
-        _ value: HTMLAttributeValue.HTMX.EventTrigger,
+        _ value: HTMLAttributeValue.HTMX.Trigger,
         _ modifiers: HCONValue<HCONScope.TriggerModifiers> = .init()
     ) -> HTMLAttribute<Tag> {
         trigger(nil, value, modifiers)
@@ -107,7 +107,7 @@ extension HTMLAttribute.hx {
 
     public static func trigger(
         _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
-        _ value: HTMLAttributeValue.HTMX.EventTrigger,
+        _ value: HTMLAttributeValue.HTMX.Trigger,
         _ modifiers: HCONValue<HCONScope.TriggerModifiers> = .init()
     ) -> HTMLAttribute<Tag> {
         attribute(
@@ -118,20 +118,9 @@ extension HTMLAttribute.hx {
         )
     }
 
-    public static func trigger(_ value: HTMLAttributeValue.HTMX.PollingTrigger) -> HTMLAttribute<Tag> {
-        trigger(nil, value)
-    }
-
-    public static func trigger(
-        _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
-        _ value: HTMLAttributeValue.HTMX.PollingTrigger
-    ) -> HTMLAttribute<Tag> {
-        attribute("hx-trigger", inheritance, value.rawValue, mergedBy: .appending(separatedBy: ", "))
-    }
-
     /// A swap style with optional modifiers, e.g. `.hx.swap(.beforeEnd, [.scroll(.bottom)])`.
     public static func swap(
-        _ style: HTMLAttributeValue.HTMX.SwapTarget,
+        _ style: HTMLAttributeValue.HTMX.SwapStyle,
         _ modifiers: HCONValue<HCONScope.SwapModifiers> = .init()
     ) -> HTMLAttribute<Tag> {
         swap(nil, style, modifiers)
@@ -139,7 +128,7 @@ extension HTMLAttribute.hx {
 
     public static func swap(
         _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
-        _ style: HTMLAttributeValue.HTMX.SwapTarget,
+        _ style: HTMLAttributeValue.HTMX.SwapStyle,
         _ modifiers: HCONValue<HCONScope.SwapModifiers> = .init()
     ) -> HTMLAttribute<Tag> {
         attribute("hx-swap", inheritance, modifiers.isEmpty ? style.rawValue : "\(style.rawValue) \(modifiers.rawValue)")
@@ -190,7 +179,7 @@ extension HTMLAttribute.hx {
 
     public static func selectOOB(
         _ selector: String,
-        _ swap: HTMLAttributeValue.HTMX.SwapTarget? = nil
+        _ swap: HTMLAttributeValue.HTMX.SwapStyle? = nil
     ) -> HTMLAttribute<Tag> {
         selectOOB(nil, selector, swap)
     }
@@ -198,7 +187,7 @@ extension HTMLAttribute.hx {
     public static func selectOOB(
         _ inheritance: HTMLAttributeValue.HTMX.InheritanceModifier?,
         _ selector: String,
-        _ swap: HTMLAttributeValue.HTMX.SwapTarget? = nil
+        _ swap: HTMLAttributeValue.HTMX.SwapStyle? = nil
     ) -> HTMLAttribute<Tag> {
         if let swap {
             attribute("hx-select-oob", inheritance, "\(selector):\(swap.rawValue)", mergedBy: .appending(separatedBy: ","))
@@ -212,7 +201,7 @@ extension HTMLAttribute.hx {
     }
 
     public static func swapOOB(
-        _ swap: HTMLAttributeValue.HTMX.SwapTarget,
+        _ swap: HTMLAttributeValue.HTMX.SwapStyle,
         _ selector: String? = nil
     ) -> HTMLAttribute<Tag> {
         if let selector {
@@ -224,7 +213,7 @@ extension HTMLAttribute.hx {
 
     /// An out-of-band swap with modifiers, e.g. `.hx.swapOOB(.beforeEnd, [.target("#table tbody")])`.
     public static func swapOOB(
-        _ style: HTMLAttributeValue.HTMX.SwapTarget,
+        _ style: HTMLAttributeValue.HTMX.SwapStyle,
         _ modifiers: HCONValue<HCONScope.SwapModifiers>
     ) -> HTMLAttribute<Tag> {
         .init(name: "hx-swap-oob", value: modifiers.isEmpty ? style.rawValue : "\(style.rawValue) \(modifiers.rawValue)")

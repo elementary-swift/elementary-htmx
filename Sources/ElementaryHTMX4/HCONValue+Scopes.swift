@@ -42,7 +42,7 @@ public extension HCONValue.Entry where Scope == HCONScope.GlobalConfig {
     /// `"reload"` does a full page reload on history navigation.
     static func history(_ value: String) -> Self { .init("history", value) }
     static func mode(_ value: String) -> Self { .init("mode", value) }
-    static func defaultSwap(_ value: HTMLAttributeValue.HTMX.SwapTarget) -> Self { .init("defaultSwap", value.rawValue) }
+    static func defaultSwap(_ value: HTMLAttributeValue.HTMX.SwapStyle) -> Self { .init("defaultSwap", value.rawValue) }
     static func allowEmptySwapAfterOOB(_ value: Bool) -> Self { .init("allowEmptySwapAfterOOB", value) }
     static func includeIndicatorCSS(_ value: Bool) -> Self { .init("includeIndicatorCSS", value) }
     /// In milliseconds.
@@ -85,9 +85,11 @@ public extension HCONValue.Entry where Scope == HCONScope.SwapModifiers {
     static func strip(_ value: Bool) -> Self { .init("strip", value) }
     static func focusScroll(_ value: Bool) -> Self { .init("focusScroll", value) }
     static func swapEmpty(_ value: Bool) -> Self { .init("swapEmpty", value) }
-    static func scroll(_ value: HTMLAttributeValue.HTMX.ScrollModifier) -> Self { .init("scroll", value.rawValue) }
+    /// Scrolls the target to `.top` or `.bottom`.
+    static func scroll(_ value: HTMLAttributeValue.HTMX.ScrollPosition) -> Self { .init("scroll", value.rawValue) }
     static func scrollTarget(_ selector: String) -> Self { .init("scrollTarget", selector) }
-    static func show(_ value: HTMLAttributeValue.HTMX.ScrollModifier) -> Self { .init("show", value.rawValue) }
+    /// Scrolls the target's `.top` or `.bottom` into view, or `.none` to turn it off.
+    static func show(_ value: HTMLAttributeValue.HTMX.ScrollPosition) -> Self { .init("show", value.rawValue) }
     static func showTarget(_ selector: String) -> Self { .init("showTarget", selector) }
     static func target(_ selector: String) -> Self { .init("target", selector) }
 }
@@ -122,7 +124,7 @@ public extension HCONValue.Entry where Scope == HCONScope.TriggerModifiers {
 public extension HCONValue.Entry where Scope: HCONScope.SwapOverride {
     /// A swap style with optional modifiers, e.g. `.swap(.innerHTML, [.strip(true)])` renders `swap:'innerHTML strip:true'`.
     static func swap(
-        _ style: HTMLAttributeValue.HTMX.SwapTarget,
+        _ style: HTMLAttributeValue.HTMX.SwapStyle,
         _ modifiers: HCONValue<HCONScope.SwapModifiers> = .init()
     ) -> Self {
         .init("swap", modifiers.isEmpty ? style.rawValue : "\(style.rawValue) \(modifiers.rawValue)")

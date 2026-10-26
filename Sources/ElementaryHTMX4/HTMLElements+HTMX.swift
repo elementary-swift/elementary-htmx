@@ -13,6 +13,8 @@ public typealias hxPartial<Content: HTML> = HTMLElement<HTMLTag.hxPartial, Conte
 public extension HTMLVoidElement where Tag == HTMLTag.meta {
     /// Creates a `<meta name="htmx-config">` tag with the config rendered as HCON.
     ///
+    /// htmx reads this tag once, when its script runs, so place it in `<head>` before the htmx `<script>` tag.
+    ///
     /// ```swift
     /// meta(htmxConfig: [.defaultSwap(.outerHTML), .implicitInheritance(true)])
     /// ```

@@ -41,6 +41,7 @@ import Testing
         HTMLAttributeAssertEqual(.hx.swap(.delete), "hx-swap", "delete")
         HTMLAttributeAssertEqual(.hx.swap(.none), "hx-swap", "none")
         HTMLAttributeAssertEqual(.hx.swap("upsert"), "hx-swap", "upsert")
+        HTMLAttributeAssertEqual(.hx.swap(.init("upsert")), "hx-swap", "upsert")
     }
 
     @Test func rendersSwapModifiers() {
@@ -100,6 +101,7 @@ import Testing
         HTMLAttributeAssertEqual(.hx.trigger(.event("productsUpdated"), [.from("body")]), "hx-trigger", "productsUpdated from:body")
         HTMLAttributeAssertEqual(.hx.trigger(.every("1s")), "hx-trigger", "every 1s")
         HTMLAttributeAssertEqual(.hx.trigger(.every("1s", filter: "someConditional")), "hx-trigger", "every 1s [someConditional]")
+        HTMLAttributeAssertEqual(.hx.trigger(.every("1s"), [.once]), "hx-trigger", "every 1s once")
     }
 
     @Test func rendersTriggerModifiers() {
@@ -221,6 +223,18 @@ import Testing
 
 /// The modifier chains are deprecated in favor of HCON modifier entries, but still render the same values.
 @Suite struct ElementaryHTMX4DeprecatedChainTests {
+    @available(*, deprecated)
+    @Test func acceptsRenamedTypes() {
+        let style: HTMLAttributeValue.HTMX.SwapTarget = .outerHTML
+        let position: HTMLAttributeValue.HTMX.ScrollModifier = .bottom
+        let event: HTMLAttributeValue.HTMX.TriggerEvent = .load
+        let trigger: HTMLAttributeValue.HTMX.EventTrigger = .event(event)
+        let polling: HTMLAttributeValue.HTMX.PollingTrigger = .every("1s")
+        HTMLAttributeAssertEqual(.hx.swap(style, [.scroll(position)]), "hx-swap", "outerHTML scroll:bottom")
+        HTMLAttributeAssertEqual(.hx.trigger(trigger), "hx-trigger", "load")
+        HTMLAttributeAssertEqual(.hx.trigger(polling), "hx-trigger", "every 1s")
+    }
+
     @available(*, deprecated)
     @Test func rendersDeprecatedSwapChains() {
         HTMLAttributeAssertEqual(.hx.swap(.innerHTML.transition(true)), "hx-swap", "innerHTML transition:true")
