@@ -13,7 +13,7 @@ let package = Package(
         // In this demo project we import elementary-htmx from the local file system.
         .package(name: "elementary-htmx", path: "../../"),
         // In a real project add a remote dependency, e.g.
-        // .package(url: "https://github.com/elementary-swift/elementary-htmx.git", branch: "main"),
+        // .package(url: "https://github.com/elementary-swift/elementary-htmx.git", from: "0.7.0"),
         .package(url: "https://github.com/hummingbird-project/hummingbird.git", from: "2.28.1"),
         .package(url: "https://github.com/hummingbird-project/hummingbird-websocket.git", from: "2.8.1"),
         .package(url: "https://github.com/hummingbird-community/hummingbird-elementary.git", from: "0.6.0"),

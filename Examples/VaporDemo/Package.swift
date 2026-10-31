@@ -15,7 +15,7 @@ let package = Package(
         // In this demo project we import elementary-htmx from the local file system.
         .package(name: "elementary-htmx", path: "../../"),
         // In a real project add a remote dependency, e.g.
-        // .package(url: "https://github.com/elementary-swift/elementary-htmx.git", branch: "main"),
+        // .package(url: "https://github.com/elementary-swift/elementary-htmx.git", from: "0.7.0"),
         .package(url: "https://github.com/apple/swift-async-algorithms", from: "1.1.7"),
     ],
     targets: [
