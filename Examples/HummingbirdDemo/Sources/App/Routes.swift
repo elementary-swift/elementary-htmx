@@ -1,6 +1,6 @@
 import AsyncAlgorithms
 import Elementary
-import ElementaryHTMX
+import ElementaryHTMX4
 import Foundation
 import Hummingbird
 import HummingbirdElementary
@@ -48,7 +48,7 @@ func addRoutes(to router: Router<some RequestContext>) {
         }
 
         return HTMLResponse {
-            // exmple of using OOB swaps
+            // example of using OOB swaps
             ItemList()
                 .attributes(.hx.swapOOB(.outerHTML, "#list"))
         }
@@ -73,28 +73,6 @@ func addWSRoutes(to router: Router<some WebSocketRequestContext>) {
 
 struct EchoRequest: Codable {
     var message: String
-    var headers: HTMXHeaders
-
-    enum CodingKeys: String, CodingKey {
-        case message
-        case headers = "HEADERS"
-    }
-}
-
-struct HTMXHeaders: Codable {
-    var hxRequest: String
-    var hxTrigger: String?
-    var hxTriggerName: String?
-    var hxTarget: String
-    var hxCurrentURL: String?
-
-    enum CodingKeys: String, CodingKey {
-        case hxRequest = "HX-Request"
-        case hxTrigger = "HX-Trigger"
-        case hxTriggerName = "HX-Trigger-Name"
-        case hxTarget = "HX-Target"
-        case hxCurrentURL = "HX-Current-URL"
-    }
 }
 
 extension ResponseBodyWriter {

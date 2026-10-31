@@ -1,6 +1,7 @@
 import Elementary
-import ElementaryHTMXSSE
-import ElementaryHTMXWS
+import ElementaryHTMX4
+import ElementaryHTMX4SSE
+import ElementaryHTMX4WS
 import Foundation
 
 struct MainPage: HTMLDocument {
@@ -9,8 +10,8 @@ struct MainPage: HTMLDocument {
     var head: some HTML {
         meta(.charset(.utf8))
         script(.src("/htmx.min.js")) {}
-        script(.src("/htmxsse.min.js")) {}
-        script(.src("/htmxws.min.js")) {}
+        script(.src("/ext/hx-sse.min.js")) {}
+        script(.src("/ext/hx-ws.min.js")) {}
         link(.href("/pico.min.css"), .rel(.stylesheet))
     }
 
@@ -19,7 +20,7 @@ struct MainPage: HTMLDocument {
             h2 { "Hummingbird + Elementary + HTMX Demo" }
             // example of using htmx sse
             h6 { "HTMX SSE example" }
-            div(.hx.ext(.sse), .sse.connect("/time"), .sse.swap("message")) {
+            div(.hx.sse.connect("/time")) {
                 TimeHeading()
             }
         }
@@ -38,8 +39,8 @@ struct MainPage: HTMLDocument {
             hr()
             h6 { "HTMX WS example" }
             // example of using htmx ws
-            div(.hx.ext(.ws), .ws.connect("/echo"), .hx.target("#echo")) {
-                form(.ws.send, .style("display: flex;")) {
+            div(.hx.ws.connect("/echo"), .hx.target("#echo"), .hx.swap(.beforeEnd)) {
+                form(.hx.ws.send, .style("display: flex;")) {
                     input(.type(.text), .name("message"), .value("Hello, World!"), .required)
                     button(.class("btn btn-primary"), .style("height: 100%; margin-left: 1rem;")) {
                         "Send"
@@ -89,12 +90,7 @@ struct WSResponse: HTML {
     var echoRequest: EchoRequest
 
     var body: some HTML {
-        div(
-            .id(echoRequest.headers.hxTarget),
-            .hx.swapOOB(.beforeEnd, "#\(echoRequest.headers.hxTarget)")
-        ) {
-            "Received: \(echoRequest.message) at \(Date())"
-            br()
-        }
+        "Received: \(echoRequest.message) at \(Date())"
+        br()
     }
 }

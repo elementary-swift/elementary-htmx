@@ -37,7 +37,7 @@ hxPartial(.hx.target("#notifications")) {
 import Elementary
 import ElementaryHTMXSSE
 
-// HTMX Server Send Events extension
+// HTMX Server-Sent Events extension
 div(.hx.ext(.sse), .sse.connect("/time"), .sse.swap("message")) {
     Date()
 }
@@ -69,6 +69,8 @@ button(.hyperscript("on click send hello to <form />")) {
 
 ## Play with it
 
+The example apps use htmx 4 with the `ElementaryHTMX4` modules.
+
 Check out the [Hummingbird example app](https://github.com/elementary-swift/elementary-htmx/tree/main/Examples/HummingbirdDemo).
 
 Check out the [Vapor example app](https://github.com/elementary-swift/elementary-htmx/tree/main/Examples/VaporDemo).
@@ -77,7 +79,7 @@ Check out the [Vapor example app](https://github.com/elementary-swift/elementary
 
 The package brings the `.hx` syntax to all `HTMLElements` - providing a rich API for most [HTMX attributes](https://htmx.org/docs/), as well as the `hxPartial` element for [`<hx-partial>`](https://htmx.org/attributes/hx-partial/) (requires htmx 2.0.11 or later).
 
-There is also an `ElementaryHTMXSSE` module that adds the `.sse` syntax for the [Server Sent Events extensions](https://github.com/bigskysoftware/htmx-extensions/blob/main/src/sse/README.md), as well as `ElementaryHTMXWS` to add the `.ws` syntax for the [WebSockets extensions.](https://github.com/bigskysoftware/htmx-extensions/blob/main/src/ws/README.md)
+There is also an `ElementaryHTMXSSE` module that adds the `.sse` syntax for the [Server-Sent Events extension](https://github.com/bigskysoftware/htmx-extensions/blob/main/src/sse/README.md), as well as `ElementaryHTMXWS` to add the `.ws` syntax for the [WebSockets extension](https://github.com/bigskysoftware/htmx-extensions/blob/main/src/ws/README.md).
 
 ### HTMX versions
 

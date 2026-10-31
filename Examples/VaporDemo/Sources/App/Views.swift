@@ -1,7 +1,7 @@
 import Elementary
-import ElementaryHTMX
-import ElementaryHTMXSSE
-import ElementaryHTMXWS
+import ElementaryHTMX4
+import ElementaryHTMX4SSE
+import ElementaryHTMX4WS
 import Foundation
 
 struct MainPage: HTMLDocument {
@@ -10,8 +10,8 @@ struct MainPage: HTMLDocument {
     var head: some HTML {
         meta(.charset(.utf8))
         script(.src("/htmx.min.js")) {}
-        script(.src("/htmxsse.min.js")) {}
-        script(.src("/htmxws.min.js")) {}
+        script(.src("/ext/hx-sse.min.js")) {}
+        script(.src("/ext/hx-ws.min.js")) {}
         link(
             .rel(.stylesheet),
             .href("https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.min.css")
@@ -23,9 +23,7 @@ struct MainPage: HTMLDocument {
             h2 { "Vapor + Elementary + HTMX Demo" }
             // example of using htmx sse
             h6 { "HTMX SSE Example" }
-            div(.hx.ext(.sse), .sse.connect("/time")) {
-                p(.sse.swap("time")) { "Server Time:" }
-            }
+            p(.hx.sse.connect("/time")) { "Server Time:" }
         }
         main {
             h6 { "HTMX Forms Example" }
@@ -46,8 +44,8 @@ struct MainPage: HTMLDocument {
             hr()
             h6 { "HTMX WS Example" }
             // example of using htmx ws
-            div(.hx.ext(.ws), .ws.connect("/echo")) {
-                form(.ws.send, .custom(name: "role", value: "group")) {
+            div(.hx.ws.connect("/echo")) {
+                form(.hx.ws.send, .custom(name: "role", value: "group")) {
                     input(.type(.text), .name("message"), .value("Hello, World!"), .required)
                     button { "Send" }
                 }
@@ -80,7 +78,8 @@ struct WSEcho: HTML {
     let message: String
 
     var body: some HTML {
-        div(.id("echo"), .hx.swapOOB(.beforeEnd)) {
+        // example of using hx-partial
+        hxPartial(.hx.target("#echo"), .hx.swap(.beforeEnd)) {
             "Echo: \(message)"
             br()
         }
