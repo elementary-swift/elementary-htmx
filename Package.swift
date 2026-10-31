@@ -22,6 +22,10 @@ let package = Package(
         .library(name: "ElementaryHTMX2", targets: ["ElementaryHTMX2"]),
         .library(name: "ElementaryHTMX2SSE", targets: ["ElementaryHTMX2SSE"]),
         .library(name: "ElementaryHTMX2WS", targets: ["ElementaryHTMX2WS"]),
+        // htmx v4
+        .library(name: "ElementaryHTMX4", targets: ["ElementaryHTMX4"]),
+        .library(name: "ElementaryHTMX4SSE", targets: ["ElementaryHTMX4SSE"]),
+        .library(name: "ElementaryHTMX4WS", targets: ["ElementaryHTMX4WS"]),
         // hyperscript
         .library(name: "ElementaryHyperscript", targets: ["ElementaryHyperscript"]),
     ],
@@ -70,6 +74,29 @@ let package = Package(
             dependencies: [
                 .product(name: "Elementary", package: "elementary"),
                 .target(name: "ElementaryHTMX2"),
+            ],
+            swiftSettings: featureFlags
+        ),
+        .target(
+            name: "ElementaryHTMX4",
+            dependencies: [
+                .product(name: "Elementary", package: "elementary")
+            ],
+            swiftSettings: featureFlags
+        ),
+        .target(
+            name: "ElementaryHTMX4SSE",
+            dependencies: [
+                .product(name: "Elementary", package: "elementary"),
+                .target(name: "ElementaryHTMX4"),
+            ],
+            swiftSettings: featureFlags
+        ),
+        .target(
+            name: "ElementaryHTMX4WS",
+            dependencies: [
+                .product(name: "Elementary", package: "elementary"),
+                .target(name: "ElementaryHTMX4"),
             ],
             swiftSettings: featureFlags
         ),
@@ -124,6 +151,30 @@ let package = Package(
             name: "ElementaryHTMX2WSTest",
             dependencies: [
                 .target(name: "ElementaryHTMX2WS"),
+                .target(name: "TestUtilities"),
+            ],
+            swiftSettings: featureFlags
+        ),
+        .testTarget(
+            name: "ElementaryHTMX4Test",
+            dependencies: [
+                .target(name: "ElementaryHTMX4"),
+                .target(name: "TestUtilities"),
+            ],
+            swiftSettings: featureFlags
+        ),
+        .testTarget(
+            name: "ElementaryHTMX4SSETest",
+            dependencies: [
+                .target(name: "ElementaryHTMX4SSE"),
+                .target(name: "TestUtilities"),
+            ],
+            swiftSettings: featureFlags
+        ),
+        .testTarget(
+            name: "ElementaryHTMX4WSTest",
+            dependencies: [
+                .target(name: "ElementaryHTMX4WS"),
                 .target(name: "TestUtilities"),
             ],
             swiftSettings: featureFlags

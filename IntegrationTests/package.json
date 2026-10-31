@@ -1,0 +1,12 @@
+{
+  "name": "elementary-htmx-integration-tests",
+  "private": true,
+  "description": "Integration tests for ElementaryHTMX4 against real htmx 4 in a headless browser",
+  "scripts": {
+    "build:server": "swift build --package-path Server --product IntegrationTestServer",
+    "test": "npm run build:server && playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0"
+  }
+}
