@@ -24,7 +24,7 @@ func addRoutes(to app: Application) {
             headers: ["Content-Type": "text/event-stream"],
             body: .init(managedAsyncStream: { writer in
                 while true {
-                    try await writer.writeBuffer(.init(string: "event: time\ndata: Server Time: \(Date())\n\n"))
+                    try await writer.writeBuffer(.init(string: "data: Server Time: \(Date())\n\n"))
                     try await Task.sleep(for: .seconds(1))
                 }
             })
