@@ -1,4 +1,4 @@
 version: 1
 builder:
   configs:
-    - documentation_targets: [ElementaryHTMX2, ElementaryHTMX2SSE, ElementaryHTMX2WS, ElementaryHTMX4, ElementaryHTMX4SSE, ElementaryHTMX4WS]
+    - documentation_targets: [ElementaryHTMX2, ElementaryHTMX2SSE, ElementaryHTMX2WS, ElementaryHTMX4, ElementaryHTMX4SSE, ElementaryHTMX4WS, ElementaryHyperscript]
